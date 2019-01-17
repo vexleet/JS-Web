@@ -9,6 +9,13 @@ function getContentType(url) {
     else if(url.endsWith('.ico')){
         return 'image/x-icon';
     }
+    else if(url.endsWith('.jpg') || url.endsWith('.jpeg')){
+        console.log(true);
+        return 'image/jpeg';
+    }
+    else if(url.endsWith('.png')){
+        return 'image/png'
+    }
 }
 
 module.exports = (req, res) => {
