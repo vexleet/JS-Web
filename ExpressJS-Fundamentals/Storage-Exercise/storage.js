@@ -1,41 +1,6 @@
 const fs = require('fs');
 let storage = {};
 
-
-function save() {
-    return new Promise((resolve, reject) => {
-        let dataJson = JSON.stringify(storage, null, 4);
-        fs.writeFile('./data/storage.json', dataJson, err => {
-            if (err) {
-                reject(err);
-                console.log(err);
-                return;
-            }
-
-            resolve();
-            // console.log(notifications.fileSavedMsg);
-        });
-    });
-}
-
-function load() {
-    return new Promise((resolve, reject) => {
-
-        fs.readFile('./data/storage.json', "utf8", (err, data) => {
-            if (err) {
-                reject(err);
-                console.log(err);
-                return;
-            }
-
-            storage = JSON.parse(data);
-            resolve();
-            // console.log(notifications.fileLoadedMsg);
-        });
-
-    });
-}
-
 module.exports = {
     put: (key, value) => {
         if (typeof key !== 'string') {
