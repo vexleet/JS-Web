@@ -12,6 +12,7 @@
     "gulp": "^4.0.0",
     "gulp-clean-css": "4.0.0",
     "gulp-rename": "1.4.0",
+    "mongoose": "^5.4.5",
     "multiparty": "^4.2.1",
     "shortid": "^2.2.14"
   }
