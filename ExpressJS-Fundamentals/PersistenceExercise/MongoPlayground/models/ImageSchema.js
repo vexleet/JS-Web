@@ -6,7 +6,7 @@ let imageSchema = new Schema({
     dateStamp: {type: Schema.Types.Date, default: Date.now()},
     imageTitle: {type: Schema.Types.String},
     description: {type: Schema.Types.String},
-    tags: [{type: Schema.Types.Mixed, ref: 'Tag'}]
+    tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}]
 });
 
 let Image = mongoose.model('Image', imageSchema);
