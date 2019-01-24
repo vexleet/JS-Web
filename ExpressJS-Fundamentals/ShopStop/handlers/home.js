@@ -1,58 +1,29 @@
-const url = require('url');
-const fs = require('fs');
-const path = require('path');
-const qs = require('querystring')
-
 const Product = require('../models/Product');
 
-module.exports = (req, res) => {
-    req.pathname = req.pathname || url.parse(req.url).pathname;
+module.exports.index = (req, res) => {
+    let queryData = req.query;
 
-    if (req.pathname === '/' && req.method === 'GET') {
-        let filePath = path.normalize(
-            path.join(__dirname, '../views/home/index.html'));
+    Product.find()
+        .populate('category')
+        .then((products) => {
+            let data = {
+                products
+            };
 
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                console.log(err);
-                res.writeHead(404, {
-                    'Content-Type': 'text/plain'
-                });
-
-                res.write('404 Not Found');
-                res.end();
-                return;
+            if (req.query.error) {
+                data.error = req.query.error;
+            } else if (req.query.success) {
+                data.success = req.query.success;
             }
 
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
+            if (queryData.query) {
+                products = products.filter(x => x.name.toLowerCase().includes(queryData.query));
+            }
+
+            res.render('home/index', {
+                products: products,
+                error: data.error,
+                success: data.success
             });
-
-            let queryData = qs.parse(url.parse(req.url).query);
-
-            Product.find()
-                .then((products) => {
-                    if (queryData.query) {
-                        products = products.filter(x => x.name.toLowerCase().includes(queryData.query));
-                    }
-                    let content = '';
-
-                    for (let product of products) {
-                        content +=
-                            `<div class="product-card">
-                                <img class="product-img" src="${product.image}">
-                                <h2>${product.name}</h2>
-                                <p>${product.description}</p>
-                            </div>`
-                    }
-
-                    let html = data.toString().replace('{content}', content);
-
-                    res.write(html);
-                    res.end();
-                });
         });
-    } else {
-        return true;
-    }
 };
