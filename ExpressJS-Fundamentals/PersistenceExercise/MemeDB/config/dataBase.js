@@ -1,45 +1,23 @@
-const fs = require('fs')
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
-let db = []
-let dbPath = './db/db.json'
+module.exports = () => {
+    mongoose.connect('mongodb://localhost:27017/meme-db');
 
-let load = () =>{
-  return new Promise ((res,rej)=>{
-    fs.readFile(dbPath,(err,data)=>{
-      if(err){
-        console.log(err)
-        return
-      }  
-      db = JSON.parse(data)
-      res(db)
-    })
-  })
-}
+    let database = mongoose.connection;
 
-let save = () =>{
-  return new Promise((res,rej)=>{
-    fs.writeFile(dbPath,JSON.stringify(db),(err)=>{
-      if(err){
-        console.log(err)
-        return
-      }
-      res()
-    })
-  })
-}
+    database.on('error', (err) => {
+        console.log(err);
+    });
 
-let add = (meme) =>{
-  db.push(meme)
-}
+    database.once('open', (err) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
 
-let dbCopy = () =>{
-  
-  return db.slice(0)
-}
+        console.log('Connected!');
+    });
 
-module.exports = {
-  load:load,
-  save:save,
-  getDb:dbCopy,
-  add:add
-}
+    require('../models/MemeSchema');
+};

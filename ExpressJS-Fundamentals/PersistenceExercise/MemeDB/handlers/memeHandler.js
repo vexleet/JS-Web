@@ -3,7 +3,7 @@ const fs = require('fs');
 const qs = require('querystring');
 const multiparty = require('multiparty');
 const shortid = require('shortid');
-const database = require('../config/dataBase');
+const Meme = require('../models/MemeSchema');
 
 module.exports = (req, res) => {
     if (req.pathname === '/viewAllMemes' && req.method === 'GET') {
@@ -14,26 +14,28 @@ module.exports = (req, res) => {
             }
 
             let content = '';
-            let memes = database.getDb()
-                .filter(x => x.privacy === 'on')
-                .sort((a, b) => b.dateStamp - a.dateStamp);
 
-            for (let meme of memes) {
-                content += `<div class="meme">
-          <a href="/getDetails?id=${meme.id}">
-          <img class="memePoster" src="${meme.memeSrc}"/>          
- </div>`
+            Meme.find({privacy: 'on'})
+                .sort({dateStamp: -1})
+                .then((memes) => {
+                    for (let meme of memes) {
+                        content += `<div class="meme">
+                                          <a href="/getDetails?id=${meme.id}">
+                                          <img class="memePoster" src="${meme.memeSrc}"/>          
+                                 </div>`
 
-            }
+                    }
 
-            let html = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', content);
+                    let html = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', content);
 
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            });
+                    res.writeHead(200, {
+                        'Content-Type': 'text/html'
+                    });
 
-            res.write(html);
-            res.end();
+                    res.write(html);
+                    res.end();
+                });
+
         });
     } else if (req.pathname === '/addMeme' && req.method === 'GET') {
         fs.readFile('./views/addMeme.html', (err, data) => {
@@ -95,14 +97,14 @@ module.exports = (req, res) => {
         });
 
         form.on('close', () => {
-            database.add(meme);
-            database.save();
+            Meme.create(meme)
+                .then(() => {
+                    res.writeHead(302, {
+                        Location: '/'
+                    });
 
-            res.writeHead(302, {
-                Location: '/'
-            });
-
-            res.end();
+                    res.end();
+                });
         });
 
         form.parse(req);
@@ -114,32 +116,31 @@ module.exports = (req, res) => {
                 return;
             }
             let queryData = qs.parse(url.parse(req.url).query);
-            let targetedMeme = database.getDb().find(x => x.id === queryData.id);
 
-            if (targetedMeme.length === 0) {
-                res.writeHead('404', {
-                    'Content-Type': 'text/plain'
-                });
-
-                res.write('404 Not Found!');
-                res.end();
-                return;
-            }
-
-            let content = `<div class="content">
+            Meme.findOne({_id: queryData.id})
+                .then((targetedMeme) => {
+                    let content = `<div class="content">
                                 <img src="${targetedMeme.memeSrc}" alt=""/>
                                 <h3>Title: ${targetedMeme.title}</h3>
                                 <p> ${targetedMeme.description}</p>
                             </div>`;
 
-            let html = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', content);
+                    let html = data.toString().replace('<div id="replaceMe">{{replaceMe}}</div>', content);
 
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            });
+                    res.writeHead(200, {
+                        'Content-Type': 'text/html'
+                    });
 
-            res.write(html);
-            res.end();
+                    res.write(html);
+                    res.end();
+                }).catch((err) => {
+                    res.writeHead('404', {
+                        'Content-Type': 'text/plain'
+                    });
+
+                    res.write('404 Not Found!');
+                    res.end();
+                });
         });
 
 
