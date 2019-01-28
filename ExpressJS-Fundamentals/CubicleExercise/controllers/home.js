@@ -17,13 +17,12 @@ module.exports.index = (req, res) => {
                             && x.difficulty >= queryData.from && x.difficulty <= queryData.to;
                     });
                 } else {
-                    error = ['Difficulty number must be between 1 and 6'];
+                    res.locals.error = ['Difficulty number must be between 1 and 6'];
                 }
             }
 
             res.render('index', {
                 cubes: cubes,
-                error: error,
             });
         });
 };
