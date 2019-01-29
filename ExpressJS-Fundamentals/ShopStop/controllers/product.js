@@ -40,6 +40,8 @@ module.exports.editGet = (req, res) => {
                             categories: categories
                         });
                     });
+            } else {
+                res.redirect(`/?error=${encodeURIComponent('You are not the creator of this product!')}`);
             }
         });
 };
@@ -92,6 +94,8 @@ module.exports.editPost = async (req, res) => {
                     res.redirect(`/?success=${encodeURIComponent('Product was edited successfully')}`);
                 });
         }
+    } else {
+        res.redirect(`/?error=${encodeURIComponent('You are not the creator of this product!')}`);
     }
 };
 
@@ -109,6 +113,8 @@ module.exports.deleteGet = (req, res) => {
                 res.render('product/delete', {
                     product: product,
                 });
+            } else {
+                res.redirect(`/?error=${encodeURIComponent('You are not the creator of this product!')}`);
             }
         });
 };
@@ -132,6 +138,8 @@ module.exports.deletePost = async (req, res) => {
                         res.redirect(`/?success=${encodeURIComponent('Product was deleted successfully')}`);
                     });
             });
+    } else {
+        res.redirect(`/?error=${encodeURIComponent('You are not the creator of this product!')}`);
     }
 };
 
