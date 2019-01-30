@@ -67,11 +67,14 @@ module.exports = {
         let carId = req.params.id;
         let editedCarBody = req.body;
 
-        Car.findById(carId)
+        await Car.findById(carId)
             .then((car) => {
                 car.model = editedCarBody.model;
-                car.image = editedCarBody.image;
                 car.pricePerDay = editedCarBody.pricePerDay;
+
+                if (req.file) {
+                    car.image = '\\' + req.file.path;
+                }
 
                 car.save()
                     .then(() => {
