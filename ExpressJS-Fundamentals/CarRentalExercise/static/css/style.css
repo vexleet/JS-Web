@@ -5,6 +5,14 @@
     -o-transition: none !important;
 }
 
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+}
+
 html {
     height: 100%;
 }
@@ -27,9 +35,9 @@ header {
     top: 0;
     z-index: 1;
     width: 100%;
-    height: 50px;
+    height: 60px;
     border-bottom: 1px solid lightgray;
-    background-color: #dddddd;
+    background-color: #23393D;
 }
 
 nav {
@@ -53,22 +61,30 @@ nav ul {
 
 nav li {
     display: inline-block;
+    color: #fff;
+    font-family: 'Roboto';
+    font-weight: bold;
+    height: 100%;
+}
+
+nav li span{
     height: 100%;
 }
 
 nav a {
+    font-family: 'Roboto';
+    font-weight: bold;
     text-decoration: none;
-    height: calc(100% - 20px);
     display: block;
     padding: 20px 10px 0 10px;
     transition: 0.1s all ease-in-out;
     text-transform: uppercase;
-    color: #607D8B;
+    color: #fff;
 }
 
 nav li:hover a {
-    background-color: #fad760e6;
-    border-bottom: 1px solid gray;
+    color: #F0C540;
+    text-decoration: none;
 }
 
 nav ul#user {
@@ -92,6 +108,158 @@ main {
     text-align: center;
 }
 
+.bg{
+    background-image: url("/static/home-image.jpg");
+    height: 90%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-text{
+    background: rgba(0, 0, 0, 0.3);
+    height: 100%;
+    width: 50%;
+    float: right;
+}
+
+.bg-text h1{
+    font-size: 100px;
+    text-align: left;
+    padding: 80px 70px 40px 70px;
+    color: #fff;
+    margin-top: 200px;
+    font-family: "Montserrat Subrayada", sans-serif;
+}
+
+.bg-text p{
+    font-size: 35px;
+    text-align: left;
+    padding-left: 70px;
+    color: #F2462E;
+    font-family: "Montserrat Subrayada", sans-serif;
+}
+
+.row-no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.row:before{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.product{
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+
+.product:hover:after {
+    background: rgba(242, 70, 46, 0.8);
+}
+
+.product:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: -webkit-linear-gradient(top, rgba(34, 34, 33, 0) 0%, rgba(34, 34, 33, 0) 25%, #222221 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222226', endColorstr='#222226', GradientType=0);
+    background: linear-gradient(to bottom, rgba(34, 34, 33, 0) 0%, rgba(34, 34, 33, 0) 25%, #222221 100%);
+    -webkit-transition: 0.35s all ease;
+    transition: 0.35s all ease;
+}
+
+.product__cnt {
+    z-index: 1;
+    position: absolute;
+    left: 10%;
+    bottom: 7%;
+}
+
+.product__cnt h5{
+    font-size: 30px;
+}
+
+.uppercase{
+    text-transform: uppercase;
+}
+
+.product img{
+    width: 100%;
+    transform: scale(1.01);
+}
+
+.row-no-gutter > [class*='col'] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.product__cnt .pricing-table {
+    margin-top: 13px;
+}
+
+.product .link {
+    color: #fff;
+    margin-top: 0;
+    margin-left: 1px;
+}
+
+.product:hover .link {
+    -ms-transform: translateY(0);
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.product .link {
+    color: #fff;
+    margin-top: 0;
+    margin-left: 1px;
+    -ms-transform: translateY(300px);
+    -webkit-transform: translateY(300px);
+    transform: translateY(300px);
+    -webkit-transition: 0.45s -webkit-transform ease;
+    transition: 0.45s transform ease;
+}
+
+.link {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+    -webkit-transition: 0.25s all ease;
+    transition: 0.25s all ease;
+}
+
+.link a {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: inherit;
+}
+
+.link a:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+ul{
+    list-style: none;
+}
+
 footer {
     position: fixed;
     bottom: 0;
@@ -99,8 +267,8 @@ footer {
     text-align: center;
     right: 0;
     left: 0;
-    background-color: #dddddd;
-    color: #607D8B;
+    background-color: #23393D;
+    color: #fff;
 }
 
 .car {
@@ -197,7 +365,7 @@ td {
     border: 1px solid transparent;
     background-color: #dddddd;
     height: 30px;
-    width: 100px;
+    width: 105px;
 }
 
 #notification {

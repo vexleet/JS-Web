@@ -1,22 +1,28 @@
 <form id="search-form" action="/search">
     <!--Chosse criteria for searching-->
     <input type="text" name="model">
-    <input class="submit-btn" type="submit" value="Search" />
+    <input class="submit-btn" type="submit" value="Search"/>
 </form>
-<div id="container">
-    {{#each cars}}
-    <div class="car">
-        <h2>{{model}}</h2>
-        <img src="{{image}}" alt="car">
-        <h2 class="price">Price per day: {{pricePerDay}} &euro;</h2>
-
-        {{#if ../user}}
-        <a class="rent-btn" href="/car/rent/{{_id}}">Rent</a>
-        {{/if}}
-
-        {{#if ../isAdmin}}
-        <a class="edit-btn" href="/car/edit/{{_id}}">Edit</a>
-        {{/if}}
+<section>
+    <div class="row row-no-gutter">
+        {{#each cars}}
+            <div class="col-sm-6 col-md-4">
+                <div class="product">
+                    <img src="{{image}}" alt="">
+                    <div class="product__cnt">
+                        <h5 class="uppercase">{{model}}</h5>
+                        <ul class="pricing-table">
+                            <li>Price per day: <span class="price">{{pricePerDay}}</span></li>
+                        </ul>
+                        {{#if ../user}}
+                            <span class="link"><a href="/car/rent/{{_id}}">Rent</a></span>
+                        {{/if}}
+                        {{#if ../isAdmin}}
+                            <span class="link"><a href="/car/edit/{{_id}}">Edit</a></span>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
+</section>
