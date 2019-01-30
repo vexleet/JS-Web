@@ -7,6 +7,7 @@ module.exports = {
     },
     addCarPost: async (req, res) => {
         let reqCar = req.body;
+        reqCar.image = '\\' + req.file.path;
 
         await Car.create(reqCar)
             .then(() => {

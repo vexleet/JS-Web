@@ -2,6 +2,10 @@ const restrictedPages = require('./auth');
 const homeController = require('../controllers/home');
 const userController = require('../controllers/user');
 const carController = require('../controllers/car');
+const searchController = require('../controllers/search');
+const multer = require('multer');
+
+let upload = multer({dest: "./static/images"});
 
 module.exports = app => {
     app.get('/', homeController.index);
@@ -13,9 +17,14 @@ module.exports = app => {
     app.post('/user/login', userController.loginPost);
 
     app.get('/car/add', restrictedPages.hasRole('Admin'),carController.addCarGet);
-    app.post('/car/add', restrictedPages.hasRole('Admin'), carController.addCarPost);
+    app.post('/car/add',
+        upload.single('image'),
+        restrictedPages.hasRole('Admin'),
+        carController.addCarPost);
 
     app.get('/car/all', carController.allCars);
+
+    app.get('/search', searchController.searchModel);
 
     app.get('/car/rent/:id', restrictedPages.isAuthed, carController.rentCarGet);
     app.post('/car/rent/:id', restrictedPages.isAuthed, carController.rentCarPost);

@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const config = require('./config');
+const path = require('path');
 
 module.exports = app => {
     app.engine('.hbs', handlebars({
@@ -37,5 +39,10 @@ module.exports = app => {
 
     app.set('view engine', '.hbs');
 
-    app.use(express.static('./static'));
+    app.use((req, res, next) => {
+        if (req.url.startsWith('/static')) {
+            req.url = req.url.replace('/static', '');
+        }
+        next();
+    }, express.static('static'));
 };
