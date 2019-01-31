@@ -23,6 +23,8 @@ module.exports.productsByCategory = (req, res) => {
                 return;
             }
 
+            category.products = category.products.filter(x => x.buyer === undefined);
+
             res.render('category/products', {category: category});
         });
 };
