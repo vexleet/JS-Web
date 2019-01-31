@@ -49,7 +49,7 @@ module.exports = {
         });
         let car = await Car.findByIdAndUpdate({_id: carId}, {$set: {isRented: true, expiresOn: rent.days}});
 
-        res.redirect('/');
+        res.redirect('/user/rents');
     },
     editCarGet: (req, res) => {
         let carId = req.params.id;
