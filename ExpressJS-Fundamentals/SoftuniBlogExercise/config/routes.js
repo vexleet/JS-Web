@@ -14,6 +14,12 @@ module.exports = (app) => {
 
     app.get('/user/details', userController.userDetailsGet);
 
+    app.get('/:fullName/edit/:id', userController.editUserGet);
+    app.post('/:fullName/edit/:id', userController.editUserPost);
+
+    app.get('/:fullName/changePassword/:id', userController.editPasswordGet);
+    app.post('/:fullName/changePassword/:id', userController.editPasswordPost);
+
     app.get('/article/create', articleController.createArticleGet);
     app.post('/article/create', articleController.createArticlePost);
 
