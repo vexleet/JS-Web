@@ -30,6 +30,11 @@
             {{/if}}
         </ul>
     </div>
+    {{#if globalError}}
+        <div class="error">
+            {{globalError}}
+        </div>
+    {{/if}}
     {{{body}}}
 </body>
 

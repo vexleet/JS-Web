@@ -11,11 +11,18 @@ module.exports = {
         let thread = await Thread.findOne({ users: { $all: [currentUser.username, otherUserUsername] } });
         let otherUser = await User.findOne({ username: otherUserUsername });
 
-        let newMessage = await Message.create({
-            content,
-            thread: thread._id,
-            userReceiver: otherUser._id,
-        });
+        try{
+            let newMessage = await Message.create({
+                content,
+                thread: thread._id,
+                userReceiver: otherUser._id,
+            });
+        }
+        catch(e){
+            res.locals.globalError = 'You have to write something';
+            res.render('home/index');
+            return;
+        }
 
         res.redirect(`/thread/${otherUser.username}`);
     },

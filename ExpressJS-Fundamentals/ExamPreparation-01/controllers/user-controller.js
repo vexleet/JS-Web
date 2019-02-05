@@ -7,6 +7,13 @@ module.exports = {
     },
     registerPost: async (req, res) => {
         const reqUser = req.body;
+
+        if(reqUser.password !== reqUser.confirmPassword){
+            res.locals.globalError = 'Password do not match!';
+            res.render('users/register');
+            return;
+        }
+
         const salt = encryption.generateSalt();
         const hashedPass =
             encryption.generateHashedPassword(salt, reqUser.password);
@@ -28,8 +35,7 @@ module.exports = {
                 }
             });
         } catch (e) {
-            console.log(e);
-            res.locals.globalError = e;
+            res.locals.globalError = 'User with the same username exists!';
             res.render('users/register');
         }
     },
