@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
     salt: { type: mongoose.Schema.Types.String, required: true },
     roles: [{ type: mongoose.Schema.Types.String }],
     blockedUsers: [{type: mongoose.Schema.Types.String}],
+}, {
+    usePushEach: true
 });
 
 userSchema.method({

@@ -29,14 +29,16 @@ module.exports = {
     },
 
     openThread: async (req, res) => {
-        let otherUser = req.params.otherUser;
+        let otherUser = await User.findOne({username: req.params.otherUser});
         let currentUser = req.user;
 
-        let thread = await Thread.findOne({ users: {$all: [currentUser.username, otherUser] } });
+        let thread = await Thread.findOne({ users: { $all: [currentUser.username, otherUser.username] } });
 
         await Message.find({ thread: { $in: thread._id } })
             .then((messages) => {
                 let result = [];
+                let isBlocked = false;
+                let disableChat = false;
 
                 for (let message of messages) {
                     let currentMessage = {};
@@ -46,34 +48,33 @@ module.exports = {
                     else {
                         currentMessage = { content: message.content, userReceiver: false };
                     }
-                    
-                    if(message.content.startsWith('https://') && message.content.endsWith('.jpg')){
+                    if (message.content.startsWith('https://') && message.content.endsWith('.jpg')) {
                         currentMessage['isImage'] = true;
+                    }
+                    if (currentUser.blockedUsers.includes(otherUser.username)) {
+                        isBlocked = true;
+                    }
+                    if(otherUser.blockedUsers.includes(currentUser.username)){
+                        disableChat = true;
                     }
                     result.push(currentMessage);
                 }
 
                 res.render('thread/chatroom', {
                     messages: result,
-                    otherUserNickname: otherUser,
+                    isBlocked,
+                    disableChat,
+                    otherUserUsername: otherUser.username,
                 });
             });
     },
 
-    sendAMessage: async (req, res) => {
-        let otherUserNickname = req.params.otherUser;
-        let currentUser = req.user;
-        let content = req.body.message;
+    deleteThread: async (req, res) => {
+        let threadId = req.params.threadId;
+        console.log(threadId);
+        let thread = await Thread.deleteOne({_id: threadId});
+        let messages = await Message.deleteMany({thread: {$in: threadId}});
 
-        let thread = await Thread.findOne({ users: { $all: [currentUser.username, otherUserNickname] } });
-        let otherUser = await User.findOne({ username: otherUserNickname });
-
-        let newMessage = await Message.create({
-            content,
-            thread: thread._id,
-            userReceiver: otherUser._id,
-        });
-
-        res.redirect(`/thread/${otherUser.username}`);
+        res.redirect('/');
     },
 };

@@ -68,5 +68,29 @@ module.exports = {
             res.locals.globalError = e;
             res.render('users/login');
         }
-    }
+    },
+
+    blockUser: async (req, res) => {
+        let otherUserUsername = req.params.username;
+        let currentUser = await User.findById(req.user._id);
+
+        currentUser.blockedUsers.push(otherUserUsername);
+        currentUser.save()
+            .then(() => {
+                res.redirect(`/thread/${otherUserUsername}`);
+            });
+    },
+
+    unblockUser: async (req, res) => {
+        let otherUserUsername = req.params.username;
+        let currentUser = await User.findById(req.user._id);
+
+        let indexOfOtherUserUsername = currentUser.blockedUsers.indexOf(otherUserUsername);
+        currentUser.blockedUsers.splice(indexOfOtherUserUsername, 1);
+        
+        currentUser.save()
+            .then(() => {
+                res.redirect(`/thread/${otherUserUsername}`);
+            });
+    },
 };
