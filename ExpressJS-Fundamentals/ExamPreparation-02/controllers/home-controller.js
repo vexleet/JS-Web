@@ -4,8 +4,7 @@ const Edit = require('../models/Edit');
 module.exports = {
     index: async (req, res) => {
         let articles = await Article.find();
-		console.log(articles);
-		if(!articles){
+		if(articles.length > 0){
 			let lastArticle = articles[articles.length - 1];
 
 			let lastEditId = lastArticle.edits[lastArticle.edits.length - 1].toString();
