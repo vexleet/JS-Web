@@ -4,27 +4,33 @@ const Edit = require('../models/Edit');
 module.exports = {
     index: async (req, res) => {
         let articles = await Article.find();
-        let lastArticle = articles[articles.length - 1];
+		console.log(articles);
+		if(!articles){
+			let lastArticle = articles[articles.length - 1];
 
-        let lastEditId = lastArticle.edits[lastArticle.edits.length - 1].toString();
-        let mostRecentEdit = await Edit.findById(lastEditId);
+			let lastEditId = lastArticle.edits[lastArticle.edits.length - 1].toString();
+			let mostRecentEdit = await Edit.findById(lastEditId);
 
-        let latestArticle = {
-            title: lastArticle.title,
-            content: mostRecentEdit.content.split(/\s+/).slice(0,50).join(" "),
-            _id: lastArticle._id,
-        }
+			let latestArticle = {
+				title: lastArticle.title,
+				content: mostRecentEdit.content.split(/\s+/).slice(0,50).join(" "),
+				_id: lastArticle._id,
+			}
 
-        let lastThreeArticles = [];
+			let lastThreeArticles = [];
 
-        if (articles.length >= 2) {
-            lastThreeArticles = articles.slice(-4);
-            lastThreeArticles.pop();
-        }
+			if (articles.length >= 2) {
+				lastThreeArticles = articles.slice(-4);
+				lastThreeArticles.pop();
+			}
 
-        res.render('home/index', {
-            latestArticle,
-            lastThreeArticles,
-        })
+			res.render('home/index', {
+				latestArticle,
+				lastThreeArticles,
+			});
+		}else{
+			res.render('home/index');
+		}
+        
     }
 };

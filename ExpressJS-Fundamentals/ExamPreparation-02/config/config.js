@@ -1,7 +1,7 @@
 module.exports = {
     development: {
         port: process.env.PORT || 3000,
-        dbPath: 'mongodb://localhost:27017/soft-wiki-db'
+        dbPath: 'mongodb://admin:db123456@ds127545.mlab.com:27545/test-1'
     },
     production: {}
 };
