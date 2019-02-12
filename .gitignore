@@ -3,3 +3,4 @@
 /ExpressJS-Fundamentals/PersistenceExercise/MemeDB/node_modules
 /ExpressJS-Fundamentals/PersistenceExercise/MongoPlayground/node_modules
 node_modules
+package-lock.json
