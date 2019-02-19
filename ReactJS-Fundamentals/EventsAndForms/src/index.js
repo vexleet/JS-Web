@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { getPokemons, getPokemon } from './services/pokedex-web-service';
+import { getPokemons } from './services/pokedex-web-service';
 
 class Pokemons extends Component {
     constructor(props) {
@@ -9,20 +9,47 @@ class Pokemons extends Component {
 
         this.state = ({
             pokemons: [],
+            foundPokemons: [],
             isLoading: true,
-        })
+            searchPokemon: ''
+        });
+
+        this.searchPokemonHandler = this.searchPokemonHandler.bind(this);
+    }
+
+    searchPokemonHandler(event){
+        let pokemonName = event.target.value;
+
+        let foundPokemons = this.state.pokemons.filter(pokemon => 
+            pokemon.name
+            .toLowerCase()
+            .startsWith(pokemonName.toLowerCase()))
+        
+        this.setState({
+            searchPokemon: pokemonName,
+            foundPokemons: foundPokemons,
+        });
     }
 
     render() {
-        const pokemons = this.state.pokemons;
+        let pokemons = this.state.pokemons;
         const isLoading = this.state.isLoading;
+
+        if(this.state.foundPokemons.length > 0){
+            pokemons = this.state.foundPokemons;
+        }
 
         if(isLoading){
             return <div>Loading ...</div>
         }
 
         return (
-            <ul className="pokemons">
+            <div className="page">
+                <div className="page__search">
+                    <input type="text" name="pokemonName" placeholder="Enter pokemon name" 
+                        value={this.state.searchPokemon} onChange={this.searchPokemonHandler} />
+                </div>
+                <ul className="pokemons">
                 {
                     pokemons.map(pokemon => {
                         return <li className="pokemons__item">
@@ -36,6 +63,7 @@ class Pokemons extends Component {
                     })
                 }
             </ul>
+            </div>
         )
     };
 

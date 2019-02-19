@@ -10,6 +10,10 @@ body {
   text-align: center;
 }
 
+.page__search {
+  padding-top: 10px;
+}
+
 .pokemons {
   margin: 0;
   padding: 0;
@@ -26,7 +30,6 @@ body {
   z-index: 20000;
   overflow: hidden;
   background-color: #eee;
-  cursor: pointer;
 }
 
 .pokemon__sprite {

@@ -6,9 +6,3 @@ export const getPokemons = () => {
         .then(data => data.results)
         .catch(error => console.error(error));
 };
-
-export const getPokemon = (pokemonUrl) => {
-    return fetch(pokemonUrl)
-        .then(res => res.json())
-        .then(data => data);
-}
