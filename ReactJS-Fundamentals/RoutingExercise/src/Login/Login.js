@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { Redirect } from 'react-router-dom';
 class Login extends Component {
   render() {
-    if (this.props.redirectToReferrer) {
-      return <Redirect to='/' />
-    }
+
     return (
       <div className="Login">
         <h1>Login</h1>
@@ -28,7 +25,7 @@ class Login extends Component {
           <label htmlFor="passwordLogin">Password</label>
           <input type="password"
             id="passwordLogin" placeholder="******" />
-          <input type="submit" value="Login" />
+          <input type="submit" className="submitButton" value="Login" />
         </form>
       </div>
     );

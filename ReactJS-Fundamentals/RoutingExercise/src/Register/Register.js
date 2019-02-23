@@ -4,9 +4,6 @@ import { Redirect } from 'react-router-dom';
 
 class Register extends Component {
   render() {
-    if (this.props.redirectToReferrer) {
-      return <Redirect to='/' />
-    }
     return (
       <div className="Register">
         <h1>Register</h1>
@@ -23,6 +20,7 @@ class Register extends Component {
             email,
             password,
           };
+
           this.props.registerUser(user);
         }}>
           <label htmlFor="username">Username</label>
@@ -34,7 +32,7 @@ class Register extends Component {
           <label htmlFor="password">Password</label>
           <input type="password" id="password"
             placeholder="******" />
-          <input type="submit" value="REGISTER" />
+          <input type="submit" className="submitButton" value="REGISTER" />
         </form>
       </div>
     );

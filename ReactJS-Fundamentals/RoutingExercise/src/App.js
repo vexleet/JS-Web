@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, Link } from "react-router-dom";
 import Home from './Home/Home';
 import Register from './Register/Register';
 import Login from './Login/Login';
 import Create from './Create/Create';
 import './App.css';
+import './Toastr.css';
+import toastr from 'toastr';
 
 class App extends Component {
   constructor(props) {
@@ -31,10 +33,20 @@ class App extends Component {
       },
       body: JSON.stringify(user),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Please fill up all fields!");
+        }
+        return res.json();
+      })
       .then(() => {
-        this.loginUser({ username: user.username, password: user.password })
-
+        toastr.success("Successfully registered");
+        this.loginUser({ username: user.username, password: user.password });
+      })
+      .catch((error) => {
+        toastr.error(error.message, '', {
+          closeButton: true
+        });
       });
   }
 
@@ -46,7 +58,12 @@ class App extends Component {
       },
       body: JSON.stringify(user),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Invalid credentials.");
+        }
+        return res.json();
+      })
       .then((data) => {
         this.setState({
           user: data.username,
@@ -57,16 +74,26 @@ class App extends Component {
         sessionStorage.setItem('token', data.token);
         sessionStorage.setItem('username', data.username);
         sessionStorage.setItem('isAdmin', data.isAdmin);
+
+        toastr.success('Login successful');
+      })
+      .catch((error) => {
+        toastr.error(error.message, '', {
+          closeButton: true
+        })
       });
   }
 
-  logout(){
+  logout() {
     sessionStorage.clear();
 
     this.setState({
       user: null,
       isAdmin: undefined,
+      redirectToReferrer: true,
     });
+
+    toastr.success('Logout successful');
   }
 
   async createMovie(movie) {
@@ -77,7 +104,12 @@ class App extends Component {
       },
       body: JSON.stringify(movie),
     })
-      .then(() => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Please fill up all fields.");
+        }
+
+        toastr.success('Movie added successfully.');
         fetch('http://localhost:9999/feed/movies')
           .then((res) => res.json())
           .then((data) => {
@@ -86,23 +118,28 @@ class App extends Component {
               redirectToReferrer: true,
             })
           });
+      })
+      .catch((error) => {
+        toastr.error(error.message);
       });
   }
 
   render() {
     const { redirectToReferrer, movies, user } = this.state;
 
-    if(redirectToReferrer){
+    if (redirectToReferrer) {
       this.setState({
         redirectToReferrer: false,
       });
+
+      return <Redirect to='/' />
     }
 
     return (
       <Router>
         <div className="App">
           <header>
-            <a href="#default" className="logo">Interactive IMDB</a>
+            <Link to="/" className="logo">Interactive IMDB</Link>
             <div className="header-right">
               <Link to="/">Home</Link>
               {
@@ -126,8 +163,8 @@ class App extends Component {
             </div>
           </header>
           <Route exact path='/' render={() => <Home movies={movies} user={user} />} />
-          <Route path='/register' render={() => <Register registerUser={this.registerUser} redirectToReferrer={redirectToReferrer}/>} />
-          <Route path='/login' render={() => <Login loginUser={this.loginUser} redirectToReferrer={redirectToReferrer} />} />
+          <Route path='/register' render={() => <Register registerUser={this.registerUser} />} />
+          <Route path='/login' render={() => <Login loginUser={this.loginUser} />} />
           <Route path='/create' render={() => <Create createMovie={this.createMovie} redirectToReferrer={redirectToReferrer} />} />
         </div>
       </Router>

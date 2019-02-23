@@ -22,8 +22,8 @@ class Home extends Component {
                 {
                   user ?
                     <span>
-                      <button>View Trailer</button>
-                      <button>View Story Line</button>
+                      <button className="submitButton">View Trailer</button>
+                      <button className="submitButton">View Story Line</button>
                     </span>
                     : ''
                 }

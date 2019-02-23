@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import './Create.css';
-import { Redirect } from 'react-router-dom'; 
+import { Redirect } from 'react-router-dom';
 
 class Create extends Component {
   render() {
-    if (this.props.redirectToReferrer) {
-      return <Redirect to='/' />
-    }
     return (
       <div className="Create">
         <h1>Create Movie</h1>
@@ -25,7 +22,6 @@ class Create extends Component {
             trailerUrl,
             poster,
           };
-
           this.props.createMovie(movie);
         }}>
           <label htmlFor="title">Title</label>
@@ -37,7 +33,7 @@ class Create extends Component {
           <label htmlFor="poster">Movie Poster</label>
           <input type="text" id="poster"
             placeholder="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRzg6o0KjhufKFU1iBNr1zuyi0YDNgCUw4Ky5SNATZDVKaIUkiAA" />
-          <input type="submit" value="Create" />
+          <input type="submit" className="submitButton" value="Create" />
         </form>
       </div>
     );

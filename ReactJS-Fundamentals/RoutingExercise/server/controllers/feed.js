@@ -1,7 +1,7 @@
 const Movie = require('../models/Movie');
 
 module.exports = {
-  getMovies: (req, res) => {
+  getMovies: (req, res, next) => {
     Movie.find()
       .then((movies) => {
         res
@@ -15,21 +15,21 @@ module.exports = {
         next(error);
       });
   },
-  createMovie: (req, res) => {
+  createMovie: (req, res, next) => {
     const movieObj = req.body;
     Movie.create(movieObj)
-    .then((movie) => {
-      res.status(200)
-        .json({
-          message: 'Movie created successfully!',
-          movie
-        })
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+      .then((movie) => {
+        res.status(200)
+          .json({
+            message: 'Movie created successfully!',
+            movie
+          })
+      })
+      .catch((error) => {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        next(error);
+      });
   }
 }
