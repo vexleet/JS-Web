@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Register.css';
-import { Redirect } from 'react-router-dom';
 
 class Register extends Component {
   render() {

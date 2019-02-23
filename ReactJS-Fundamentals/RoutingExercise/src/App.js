@@ -17,12 +17,17 @@ class App extends Component {
       movies: [],
       isAdmin: undefined,
       redirectToReferrer: false,
+      storyLine: undefined,
+      movieName: undefined,
+      trailerUrl: undefined,
     };
 
     this.registerUser = this.registerUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
     this.logout = this.logout.bind(this);
     this.createMovie = this.createMovie.bind(this);
+    this.viewStoryLine = this.viewStoryLine.bind(this);
+    this.viewTrailer = this.viewTrailer.bind(this);
   }
 
   async registerUser(user) {
@@ -91,6 +96,9 @@ class App extends Component {
       user: null,
       isAdmin: undefined,
       redirectToReferrer: true,
+      storyLine: undefined,
+      movieName: undefined,
+      trailerUrl: undefined,
     });
 
     toastr.success('Logout successful');
@@ -124,13 +132,33 @@ class App extends Component {
       });
   }
 
+  viewStoryLine(storyLine, movieName) {
+    this.setState({
+      storyLine: storyLine,
+      movieName: movieName,
+      trailerUrl: undefined,
+      redirectToReferrer: true,
+    });
+  }
+
+  viewTrailer(trailerUrl, movieName) {
+    this.setState({
+      storyLine: undefined,
+      movieName: movieName,
+      trailerUrl: trailerUrl,
+      redirectToReferrer: true,
+    });
+  }
+
   render() {
-    const { redirectToReferrer, movies, user } = this.state;
+    const { redirectToReferrer, movies, user,
+      storyLine, movieName, trailerUrl, isAdmin } = this.state;
 
     if (redirectToReferrer) {
       this.setState({
         redirectToReferrer: false,
       });
+      window.scrollTo(0, 0)
 
       return <Redirect to='/' />
     }
@@ -142,13 +170,9 @@ class App extends Component {
             <Link to="/" className="logo">Interactive IMDB</Link>
             <div className="header-right">
               <Link to="/">Home</Link>
+              {isAdmin && <span><Link to="/create">Create</Link></span>}
               {
-                this.state.isAdmin ?
-                  <span><Link to="/create">Create</Link></span>
-                  : ''
-              }
-              {
-                this.state.user ?
+                user ?
                   <span>
                     <a href="#">Welcome {this.state.user}!</a>
                     <a href="#" onClick={this.logout.bind(this)}>Logout</a>
@@ -162,10 +186,12 @@ class App extends Component {
 
             </div>
           </header>
-          <Route exact path='/' render={() => <Home movies={movies} user={user} />} />
+          <Route exact path='/' render={() => <Home movies={movies} user={user}
+            storyLine={storyLine} viewStoryLine={this.viewStoryLine}
+            movieName={movieName} viewTrailer={this.viewTrailer} trailerUrl={trailerUrl} />} />
           <Route path='/register' render={() => <Register registerUser={this.registerUser} />} />
           <Route path='/login' render={() => <Login loginUser={this.loginUser} />} />
-          <Route path='/create' render={() => <Create createMovie={this.createMovie} redirectToReferrer={redirectToReferrer} />} />
+          <Route path='/create' render={() => <Create createMovie={this.createMovie} />} />
         </div>
       </Router>
     );
@@ -176,7 +202,7 @@ class App extends Component {
 
     if (token) {
       let user = sessionStorage.getItem('username');
-      let isAdmin = sessionStorage.getItem('isAdmin');
+      let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
       this.setState({
         user: user,
         isAdmin: isAdmin,
