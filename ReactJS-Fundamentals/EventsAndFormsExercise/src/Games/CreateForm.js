@@ -13,7 +13,11 @@ const CreateForm = (props) => {
                     description: event.target.description.value,
                     imageUrl: event.target.imageUrl.value,
                 }
-
+				
+				event.target.title.value = '';
+				event.target.description.value = '';
+				event.target.imageUrl.value = '';
+				
                 props.createGame(game);
             }}>
                 <label>Title</label>
