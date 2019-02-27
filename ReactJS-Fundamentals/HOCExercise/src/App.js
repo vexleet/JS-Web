@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
-import WithWarning from './HOCWithWarning/WithWarning';
-import ErrorBoundary from './ErrorNotification/ErrorNotification';
-import ErrorComponent from './ErrorComponent/ErrorComponent'
-import BindingForm from './BindingForm/BindingForm';
+import WithWarning from './components/HOCWithWarning/WithWarning';
+import ErrorNotification from './components/ErrorNotification/ErrorNotification'
+import ManagedForms from './components/ManagedForms/ManagedForms';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
-          {/* <Link to="/withWarning">01. With Warning</Link>
-          <Link to="/errorNotification">02. Error Notification</Link>
+          <Link to="/withWarning" className="redirect">01. With Warning</Link>
+          <Link to="/errorNotification" className="redirect">02. Error Notification</Link>
+          <Link to="/managedForms" className="redirect">03. Managed Forms</Link>
 
           <Route path="/withWarning" component={WithWarning} />
+          <Route path="/managedForms" component={ManagedForms} />
           <ErrorBoundary>
-            <Route path="/errorNotification" component={ErrorComponent} />
-          </ErrorBoundary> */}
-
-          <BindingForm>
-            <h1>Register</h1>
-            <input name="username" type="text"></input>
-            <input name="password" type="password"></input>
-          </BindingForm>
-
-          {/* <BindingForm>
-            <h1>Create Movie</h1>
-            <input name="title" type="text"></input>
-            <input name="description" type="text"></input>
-          </BindingForm> */}
+            <Route path="/errorNotification" component={ErrorNotification} />
+          </ErrorBoundary>
         </div>
       </Router>
 
