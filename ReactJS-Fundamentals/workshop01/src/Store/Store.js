@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 
 class Store extends Component {
+    handleOrder(e) {
+        let book = this[0];
+
+        this[1].props.orderBook(book);
+    }
+
     render() {
         let { books } = this.props;
-
+        console.log(this.props);
         return (
             <div className="container">
                 <div className="row space-top">
@@ -22,7 +28,7 @@ class Store extends Component {
                                         <h5 className="card-title">{book.title}</h5>
                                         <p className="card-text">{book.description}</p>
                                     </div>
-                                    <div className="card-footer"><small className="text-muted" /><a type="button" className="btn btn-primary float-right btn-sm" href="/details/5c750355eba4543e800f7ce4">Details</a><button type="button" className="btn btn-warning float-right btn-sm">Order</button></div>
+                                    <div className="card-footer"><small className="text-muted" /><a type="button" className="btn btn-primary float-right btn-sm" href="/details/5c750355eba4543e800f7ce4">Details</a><button type="button" className="btn btn-warning float-right btn-sm" onClick={this.handleOrder.bind([book, this])} >Order</button></div>
                                 </div>
                             )
                         })}

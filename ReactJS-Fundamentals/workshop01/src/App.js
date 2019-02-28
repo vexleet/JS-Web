@@ -13,12 +13,15 @@ class App extends Component {
       token: null,
       isAdmin: false,
       books: [],
+      orders: [],
     }
 
     this.registerUser = this.registerUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
     this.logout = this.logout.bind(this);
     this.createBook = this.createBook.bind(this);
+    this.orderBook = this.orderBook.bind(this);
+    this.getMyOrders = this.getMyOrders.bind(this);
   }
 
   async registerUser(user) {
@@ -57,6 +60,16 @@ class App extends Component {
       });
   }
 
+  logout() {
+    sessionStorage.clear();
+
+    this.setState({
+      user: null,
+      token: null,
+      isAdmin: false,
+    });
+  }
+
   async createBook(book) {
     await fetch("http://localhost:5000/book/create", {
       method: "post",
@@ -73,18 +86,33 @@ class App extends Component {
       });
   }
 
-  logout() {
-    sessionStorage.clear();
+  async orderBook(book) {
+    await fetch("http://localhost:5000/orders/submit", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.state.token}`,
+      },
+      body: JSON.stringify(book),
+    })
+      .then(() => console.log(true));
+  }
 
-    this.setState({
-      user: null,
-      token: null,
-      isAdmin: false,
-    });
+  async getMyOrders() {
+    if (this.state.token) {
+      await fetch("http://localhost:5000/orders/user", {
+        headers: {
+          "Authorization": `Bearer ${this.state.token}`,
+        }
+      })
+        .then((res) => res.json())
+        .then((data) => this.setState({ myOrderedBooks: data }));
+      console.log(true);
+    }
   }
 
   render() {
-    let { user, isAdmin, books } = this.state;
+    let { user, isAdmin, books, myOrderedBooks } = this.state;
 
     return (
       <div className="App">
@@ -92,7 +120,9 @@ class App extends Component {
         <Page registerUser={this.registerUser}
           loginUser={this.loginUser}
           createBook={this.createBook}
-          books={books} />
+          books={books}
+          orderBook={this.orderBook}
+          myOrderedBooks={myOrderedBooks} />
         <Footer />
       </div>
     );
@@ -103,15 +133,31 @@ class App extends Component {
 
     if (token) {
       let user = sessionStorage.getItem("user");
-      let isAdmin = sessionStorage.getItem("isAdmin");
+      let isAdmin = sessionStorage.getItem("isAdmin") === 'true';
       token = sessionStorage.getItem("token");
 
-      this.setState({ user, isAdmin, token })
+      this.setState({
+        user: user,
+        isAdmin: isAdmin,
+        token: token,
+      });
     }
 
     fetch("http://localhost:5000/book/all")
       .then((res) => res.json())
       .then((data) => this.setState({ books: data }));
+
+    fetch("http://localhost:5000/orders/user", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => this.setState({ myOrderedBooks: data }));
+  }
+
+  componentWillUnmount() {
+    this.setState({});
   }
 }
 

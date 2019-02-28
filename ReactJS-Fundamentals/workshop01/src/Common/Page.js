@@ -11,14 +11,15 @@ import PendingOrders from '../Orders/PendingOrders';
 
 class Page extends Component {
     render() {
-        const { registerUser, loginUser, createBook, books } = this.props;
+        const { registerUser, loginUser, createBook,
+            books, orderBook, myOrderedBooks } = this.props;
 
         return (
             <div>
                 <Route exact path='/' render={() => <Home books={books} />} />
                 <Route path='/cart' component={Cart} />
-                <Route path='/store' render={() => <Store books={books} />} />
-                <Route path='/myOrders' component={MyOrders} />
+                <Route path='/store' render={() => <Store books={books} orderBook={orderBook} />} />
+                <Route path='/myOrders' render={() => <MyOrders myOrderedBooks={myOrderedBooks} />} />
                 <Route path='/pendingOrders' component={PendingOrders} />
                 <Route path='/createBook' render={() => <CreateBook createBook={createBook} />} />
                 <Route path='/login' render={() => <Login loginUser={loginUser} />} />
