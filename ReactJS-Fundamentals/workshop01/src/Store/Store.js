@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 class Store extends Component {
+    handleDelete(e) {
+        let bookId = this[0];
+        console.log(this.props);
+        this[1].props.deleteBook(bookId);
+    }
+
     handleOrder(e) {
         let book = this[0];
 
@@ -8,7 +14,7 @@ class Store extends Component {
     }
 
     render() {
-        let { books } = this.props;
+        let { books, isAdmin } = this.props;
 
         return (
             <div className="container">
@@ -28,7 +34,18 @@ class Store extends Component {
                                         <h5 className="card-title">{book.title}</h5>
                                         <p className="card-text">{book.description}</p>
                                     </div>
-                                    <div className="card-footer"><small className="text-muted" /><a type="button" className="btn btn-primary float-right btn-sm" href="/details/5c750355eba4543e800f7ce4">Details</a><button type="button" className="btn btn-warning float-right btn-sm" onClick={this.handleOrder.bind([book, this])} >Order</button></div>
+                                    {isAdmin ?
+                                        <div className="card-footer">
+                                            <small className="text-muted" />
+                                            <a type="button" className="btn btn-primary float-right btn-sm" href="/edit/5c750355eba4543e800f7ce4">Edit</a>
+                                            <button type="button" className="btn btn-danger float-right btn-sm" onClick={this.handleDelete.bind([book._id, this])} >Delete</button>
+                                        </div>
+                                        : <div className="card-footer">
+                                            <small className="text-muted" />
+                                            <a type="button" className="btn btn-primary float-right btn-sm" href="/details/5c750355eba4543e800f7ce4">Details</a>
+                                            <button type="button" className="btn btn-warning float-right btn-sm" onClick={this.handleOrder.bind([book, this])} >Order</button>
+                                        </div>}
+
                                 </div>
                             )
                         })}

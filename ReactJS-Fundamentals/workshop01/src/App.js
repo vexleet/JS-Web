@@ -20,12 +20,15 @@ class App extends Component {
     this.registerUser = this.registerUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
     this.logout = this.logout.bind(this);
+    this.fetchBooks = this.fetchBooks.bind(this);
     this.createBook = this.createBook.bind(this);
     this.orderBook = this.orderBook.bind(this);
     this.getUserOrders = this.getUserOrders.bind(this);
     this.addBookToCart = this.addBookToCart.bind(this);
     this.removeBookFromCart = this.removeBookFromCart.bind(this);
     this.approveBook = this.approveBook.bind(this);
+    this.deleteBook = this.deleteBook.bind(this);
+    this.editBook = this.editBook.bind(this);
   }
 
   async registerUser(user) {
@@ -79,6 +82,12 @@ class App extends Component {
     });
   }
 
+  async fetchBooks() {
+    await fetch("http://localhost:5000/book/all")
+      .then((res) => res.json())
+      .then((data) => this.setState({ books: data }));
+  }
+
   async createBook(book) {
     await fetch("http://localhost:5000/book/create", {
       method: "post",
@@ -88,11 +97,7 @@ class App extends Component {
       },
       body: JSON.stringify(book),
     })
-      .then(() => {
-        fetch("http://localhost:5000/book/all")
-          .then((res) => res.json())
-          .then((data) => this.setState({ books: data }));
-      });
+      .then(() => this.fetchBooks());
   }
 
   async orderBook(books) {
@@ -171,6 +176,27 @@ class App extends Component {
     }).then(() => this.getAdminOrders(this.state.token));
   }
 
+  async deleteBook(id) {
+    await fetch(`http://localhost:5000/book/delete/${id}`, {
+      method: "delete",
+      headers: {
+        "Authorization": `Bearer ${this.state.token}`,
+      },
+    }).then(() => this.fetchBooks());
+  }
+
+  async editBook(book, id) {
+    await fetch(`http://localhost:5000/book/edit/${id}`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.state.token}`,
+      },
+      body: JSON.stringify(book),
+    })
+      .then(() => this.fetchBooks());
+  }
+
   render() {
     let { user, isAdmin, books, myOrderedBooks, cartOrders } = this.state;
 
@@ -186,7 +212,11 @@ class App extends Component {
           addBookToCart={this.addBookToCart}
           cartOrders={cartOrders}
           removeBookFromCart={this.removeBookFromCart}
-          approveBook={this.approveBook} />
+          approveBook={this.approveBook}
+          deleteBook={this.deleteBook}
+          isAdmin={isAdmin}
+          user={user}
+          editBook={this.editBook} />
         <Footer />
       </div>
     );
@@ -211,9 +241,7 @@ class App extends Component {
       isAdmin === false ? this.getUserOrders(token) : this.getAdminOrders(token);
     }
 
-    fetch("http://localhost:5000/book/all")
-      .then((res) => res.json())
-      .then((data) => this.setState({ books: data }));
+    this.fetchBooks();
   }
 
   componentWillUnmount() {
