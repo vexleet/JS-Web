@@ -26,12 +26,12 @@ class MyOrder extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {myOrderedBooks.map((book, index) => {
-                                            return <tr key={book._id}>
+                                        {myOrderedBooks.map((order, index) => {
+                                            return <tr key={order._id}>
                                                 <th>#{index + 1}</th>
-                                                <td>{book.date}</td>
-                                                <td>$ {book.products[0].price}</td>
-                                                <td><span className="label label-info">{book.status}</span></td>
+                                                <td>{order.date}</td>
+                                                <td>$ {order.products[0].price}</td>
+                                                <td><span className="label label-info">{order.status}</span></td>
                                                 <td><a className="btn btn-outline-warning btn-sm" href="/orders/details/5c76a2aa157aaa2c6084dc54">View</a></td>
                                             </tr>
                                         })}

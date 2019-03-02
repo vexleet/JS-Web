@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 
 class PendingOrders extends Component {
+    handleApprove(e) {
+        let id = this[0];
+
+        this[1].props.approveBook(id);
+    }
+
     render() {
+        let { myOrderedBooks } = this.props;
+
         return (
             <div className="container" style={{ paddingTop: '25px' }}>
                 <h1 className="text-center">Pending Orders</h1>
@@ -21,14 +29,17 @@ class PendingOrders extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th>#1</th>
-                                            <td>27.02.2019 г., 16:55:02 ч.</td>
-                                            <td>$ 10.00</td>
-                                            <td><span className="label label-info">Pending</span></td>
-                                            <td><a className="btn btn-outline-warning btn-sm" href="/orders/details/5c76a4c6157aaa2c6084dc55">View</a></td>
-                                            <td><button className="btn btn-outline-success btn-sm">Approve</button></td>
-                                        </tr>
+                                        {myOrderedBooks.length > 0 ? myOrderedBooks.map((order, index) => {
+                                            return <tr key={order._id}>
+                                                <th>#{index + 1}</th>
+                                                <td>{order.date}</td>
+                                                <td>$ {order.products.reduce((sum, { price }) => sum + price, 0)}</td>
+                                                <td><span className="label label-info">{order.status}</span></td>
+                                                <td><a className="btn btn-outline-warning btn-sm" href="/orders/details/5c76a4c6157aaa2c6084dc55">View</a></td>
+                                                <td><button className="btn btn-outline-success btn-sm" onClick={this.handleApprove.bind([order._id, this])}>Approve</button></td>
+                                            </tr>
+                                        }) : <tr><td>No books in cart</td></tr>}
+
                                     </tbody>
                                 </table>
                             </div>

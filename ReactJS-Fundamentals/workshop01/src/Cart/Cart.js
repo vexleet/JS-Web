@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom'
 class Cart extends Component {
+    removeBook(e) {
+        let book = this[0];
+
+        this[1].props.removeBookFromCart(book);
+    }
+
+    handleCheckout(e) {
+        let books = this[0];
+
+        this[1].props.orderBook(books);
+    }
+
     render() {
+        let { cartOrders } = this.props;
+        let totalPrice = cartOrders.reduce((sum, { price }) => sum + price, 0);
+
         return (
             <div className="container">
                 <table id="cart" className="table table-hover table-condensed">
@@ -14,27 +29,30 @@ class Cart extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td data-th="Product">
-                                <div className="row">
-                                    <div className="col-sm-4 hidden-xs"><img src="https://images-na.ssl-images-amazon.com/images/I/51fonMmNpnL.jpg" alt="..." className="cart-image" /></div>
-                                    <div className="col-sm-8">
-                                        <h4 className="nomargin">Harry Potter</h4>
-                                        <p>fantasy, adventure, kids</p>
+                        {cartOrders.length > 0 ? cartOrders.map(book => {
+                            return <tr key={book._id}>
+                                <td data-th="Product">
+                                    <div className="row">
+                                        <div className="col-sm-4 hidden-xs"><img src={book.image} alt="..." className="cart-image" /></div>
+                                        <div className="col-sm-8">
+                                            <h4 className="nomargin">{book.title}</h4>
+                                            <p>{book.genres.join(', ')}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td data-th="Price">$10.00</td>
-                            <td data-th="Subtotal" className="text-center">$10.00</td>
-                            <td className="actions" data-th><button className="btn btn-info btn-sm"><i className="fa fa-refresh" /></button><button className="btn btn-danger btn-sm"><i className="fa fa-trash-o" /></button></td>
-                        </tr>
+                                </td>
+                                <td data-th="Price">${book.price.toFixed(2)}</td>
+                                <td data-th="Subtotal" className="text-center">${book.price.toFixed(2)}</td>
+                                <td className="actions" data-th><button className="btn btn-info btn-sm"><i className="fa fa-refresh" /></button><button className="btn btn-danger btn-sm" onClick={this.removeBook.bind([book, this])}><i className="fa fa-trash-o" /></button></td>
+                            </tr>
+                        }) : <tr><td>No books in cart</td></tr>}
+
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><a className="btn btn-warning" href="/store"><i className="fa fa-angle-left" /> Continue Shopping</a></td>
+                            <td><Link className="btn btn-warning" to="/store"><i className="fa fa-angle-left" /> Continue Shopping</Link></td>
                             <td colSpan={2} className="hidden-xs" />
-                            <td className="hidden-xs text-center"><strong>Total $10.00</strong></td>
-                            <td><button className="btn btn-success btn-block">Checkout <i className="fa fa-angle-right" /></button></td>
+                            <td className="hidden-xs text-center"><strong>Total ${totalPrice.toFixed(2)}</strong></td>
+                            <td><button className="btn btn-success btn-block" onClick={this.handleCheckout.bind([cartOrders, this])}>Checkout <i className="fa fa-angle-right" /></button></td>
                         </tr>
                     </tfoot>
                 </table>

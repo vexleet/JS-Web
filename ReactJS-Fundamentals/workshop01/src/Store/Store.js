@@ -4,12 +4,12 @@ class Store extends Component {
     handleOrder(e) {
         let book = this[0];
 
-        this[1].props.orderBook(book);
+        this[1].props.addBookToCart(book);
     }
 
     render() {
         let { books } = this.props;
-        console.log(this.props);
+
         return (
             <div className="container">
                 <div className="row space-top">

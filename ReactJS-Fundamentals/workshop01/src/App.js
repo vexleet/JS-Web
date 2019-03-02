@@ -13,7 +13,8 @@ class App extends Component {
       token: null,
       isAdmin: false,
       books: [],
-      orders: [],
+      myOrderedBooks: [],
+      cartOrders: [],
     }
 
     this.registerUser = this.registerUser.bind(this);
@@ -21,7 +22,10 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.createBook = this.createBook.bind(this);
     this.orderBook = this.orderBook.bind(this);
-    this.getMyOrders = this.getMyOrders.bind(this);
+    this.getUserOrders = this.getUserOrders.bind(this);
+    this.addBookToCart = this.addBookToCart.bind(this);
+    this.removeBookFromCart = this.removeBookFromCart.bind(this);
+    this.approveBook = this.approveBook.bind(this);
   }
 
   async registerUser(user) {
@@ -48,15 +52,18 @@ class App extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
+        let isAdmin = data.user.roles.length > 0 ? true : false;
         this.setState({
           user: data.user.username,
           token: data.token,
-          isAdmin: data.user.roles.length > 0 ? true : false
+          isAdmin: isAdmin
         });
 
         sessionStorage.setItem("user", data.user.username);
         sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("isAdmin", data.user.roles.length > 0 ? true : false);
+        sessionStorage.setItem("isAdmin", isAdmin);
+
+        isAdmin === false ? this.getUserOrders(data.token) : this.getAdminOrders(data.token);
       });
   }
 
@@ -67,6 +74,8 @@ class App extends Component {
       user: null,
       token: null,
       isAdmin: false,
+      orders: [],
+      cartOrders: [],
     });
   }
 
@@ -86,33 +95,84 @@ class App extends Component {
       });
   }
 
-  async orderBook(book) {
+  async orderBook(books) {
     await fetch("http://localhost:5000/orders/submit", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${this.state.token}`,
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(books),
     })
-      .then(() => console.log(true));
+      .then(() => {
+        this.setState({
+          cartOrders: []
+        });
+        //TODO: Show message with toastr
+        console.log("Ordered books successfully");
+      });
   }
 
-  async getMyOrders() {
-    if (this.state.token) {
-      await fetch("http://localhost:5000/orders/user", {
-        headers: {
-          "Authorization": `Bearer ${this.state.token}`,
-        }
-      })
-        .then((res) => res.json())
-        .then((data) => this.setState({ myOrderedBooks: data }));
-      console.log(true);
+  async getUserOrders(token) {
+    await fetch("http://localhost:5000/orders/user", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => this.setState({ myOrderedBooks: data }));
+  }
+
+  async getAdminOrders(token) {
+    await fetch("http://localhost:5000/orders/pending", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => this.setState({ myOrderedBooks: data }));
+  }
+
+  addBookToCart(book) {
+    //TODO: Redirect to cart
+    let booksInCart = this.state.cartOrders;
+    let bookIsInCart = booksInCart.find(x => x._id === book._id);
+
+    if (!bookIsInCart) {
+      booksInCart.push(book);
     }
+
+    this.setState({
+      cartOrders: booksInCart,
+    });
+
+    sessionStorage.setItem("cartOrders", JSON.stringify(booksInCart));
+  }
+
+  removeBookFromCart(book) {
+    let booksInCart = this.state.cartOrders;
+    let indexOfBook = booksInCart.indexOf(book);
+
+    booksInCart.splice(indexOfBook, 1);
+
+    this.setState({
+      cartOrders: booksInCart,
+    });
+
+    sessionStorage.setItem("cartOrders", JSON.stringify(booksInCart));
+  }
+
+  async approveBook(id) {
+    await fetch(`http://localhost:5000/orders/approve/${id}`, {
+      method: "post",
+      headers: {
+        "Authorization": `Bearer ${this.state.token}`,
+      }
+    }).then(() => this.getAdminOrders(this.state.token));
   }
 
   render() {
-    let { user, isAdmin, books, myOrderedBooks } = this.state;
+    let { user, isAdmin, books, myOrderedBooks, cartOrders } = this.state;
 
     return (
       <div className="App">
@@ -122,7 +182,11 @@ class App extends Component {
           createBook={this.createBook}
           books={books}
           orderBook={this.orderBook}
-          myOrderedBooks={myOrderedBooks} />
+          myOrderedBooks={myOrderedBooks}
+          addBookToCart={this.addBookToCart}
+          cartOrders={cartOrders}
+          removeBookFromCart={this.removeBookFromCart}
+          approveBook={this.approveBook} />
         <Footer />
       </div>
     );
@@ -135,25 +199,21 @@ class App extends Component {
       let user = sessionStorage.getItem("user");
       let isAdmin = sessionStorage.getItem("isAdmin") === 'true';
       token = sessionStorage.getItem("token");
+      let cartOrders = sessionStorage.getItem("cartOrders") ? JSON.parse(sessionStorage.getItem("cartOrders")) : [];
 
       this.setState({
         user: user,
         isAdmin: isAdmin,
         token: token,
+        cartOrders: cartOrders
       });
+
+      isAdmin === false ? this.getUserOrders(token) : this.getAdminOrders(token);
     }
 
     fetch("http://localhost:5000/book/all")
       .then((res) => res.json())
       .then((data) => this.setState({ books: data }));
-
-    fetch("http://localhost:5000/orders/user", {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      }
-    })
-      .then((res) => res.json())
-      .then((data) => this.setState({ myOrderedBooks: data }));
   }
 
   componentWillUnmount() {

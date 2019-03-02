@@ -12,15 +12,18 @@ import PendingOrders from '../Orders/PendingOrders';
 class Page extends Component {
     render() {
         const { registerUser, loginUser, createBook,
-            books, orderBook, myOrderedBooks } = this.props;
+            books, addBookToCart, myOrderedBooks, cartOrders,
+            removeBookFromCart, orderBook, approveBook } = this.props;
 
         return (
             <div>
                 <Route exact path='/' render={() => <Home books={books} />} />
-                <Route path='/cart' component={Cart} />
-                <Route path='/store' render={() => <Store books={books} orderBook={orderBook} />} />
+                <Route path='/cart' render={() => <Cart cartOrders={cartOrders}
+                    removeBookFromCart={removeBookFromCart} orderBook={orderBook} />} />
+                <Route path='/store' render={() => <Store books={books} addBookToCart={addBookToCart} />} />
                 <Route path='/myOrders' render={() => <MyOrders myOrderedBooks={myOrderedBooks} />} />
-                <Route path='/pendingOrders' component={PendingOrders} />
+                <Route path='/pendingOrders' render={() => <PendingOrders myOrderedBooks={myOrderedBooks}
+                    approveBook={approveBook} />} />
                 <Route path='/createBook' render={() => <CreateBook createBook={createBook} />} />
                 <Route path='/login' render={() => <Login loginUser={loginUser} />} />
                 <Route path='/register' render={() => <Register registerUser={registerUser} />} />
