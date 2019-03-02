@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class PendingOrders extends Component {
     handleApprove(e) {
@@ -35,7 +36,7 @@ class PendingOrders extends Component {
                                                 <td>{order.date}</td>
                                                 <td>$ {order.products.reduce((sum, { price }) => sum + price, 0)}</td>
                                                 <td><span className="label label-info">{order.status}</span></td>
-                                                <td><a className="btn btn-outline-warning btn-sm" href="/orders/details/5c76a4c6157aaa2c6084dc55">View</a></td>
+                                                <td><Link className="btn btn-outline-warning btn-sm" to={`/orders/details/${order._id}`}>View</Link></td>
                                                 <td><button className="btn btn-outline-success btn-sm" onClick={this.handleApprove.bind([order._id, this])}>Approve</button></td>
                                             </tr>
                                         }) : <tr><td>No books in cart</td></tr>}

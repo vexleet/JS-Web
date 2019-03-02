@@ -8,6 +8,7 @@ import Cart from '../Cart/Cart';
 import Store from '../Store/Store';
 import MyOrders from '../Orders/MyOrders';
 import PendingOrders from '../Orders/PendingOrders';
+import ViewOrder from '../ViewOrder/ViewOrder';
 
 class Page extends Component {
     render() {
@@ -21,12 +22,13 @@ class Page extends Component {
                 <Route path='/cart' render={() => <Cart cartOrders={cartOrders}
                     removeBookFromCart={removeBookFromCart} orderBook={orderBook} />} />
                 <Route path='/store' render={() => <Store books={books} addBookToCart={addBookToCart} />} />
-                <Route path='/myOrders' render={() => <MyOrders myOrderedBooks={myOrderedBooks} />} />
-                <Route path='/pendingOrders' render={() => <PendingOrders myOrderedBooks={myOrderedBooks}
+                <Route exact path='/orders' render={() => <MyOrders myOrderedBooks={myOrderedBooks} />} />
+                <Route exact path='/admin/orders' render={() => <PendingOrders myOrderedBooks={myOrderedBooks}
                     approveBook={approveBook} />} />
                 <Route path='/createBook' render={() => <CreateBook createBook={createBook} />} />
                 <Route path='/login' render={() => <Login loginUser={loginUser} />} />
                 <Route path='/register' render={() => <Register registerUser={registerUser} />} />
+                <Route path="/orders/details/:id" render={(props) => <ViewOrder {...props} myOrderedBooks={myOrderedBooks} />} />
             </div>
         )
     }

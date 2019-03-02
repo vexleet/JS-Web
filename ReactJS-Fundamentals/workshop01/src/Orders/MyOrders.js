@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class MyOrder extends Component {
     render() {
@@ -30,9 +31,9 @@ class MyOrder extends Component {
                                             return <tr key={order._id}>
                                                 <th>#{index + 1}</th>
                                                 <td>{order.date}</td>
-                                                <td>$ {order.products[0].price}</td>
+                                                <td>$ {order.products.reduce((sum, { price }) => sum + price, 0)}</td>
                                                 <td><span className="label label-info">{order.status}</span></td>
-                                                <td><a className="btn btn-outline-warning btn-sm" href="/orders/details/5c76a2aa157aaa2c6084dc54">View</a></td>
+                                                <td><Link className="btn btn-outline-warning btn-sm" to={`/orders/details/${order._id}`}>View</Link></td>
                                             </tr>
                                         })}
                                     </tbody>
