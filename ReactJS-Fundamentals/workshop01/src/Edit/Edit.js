@@ -5,12 +5,17 @@ let localState = undefined;
 class Edit extends Component {
     handleSubmit(e) {
         e.preventDefault();
-
+        localState.genres = localState.genres.split(',');
         this[0].props.editBook(localState, this[1]);
+        localState.genres = localState.genres.join(',');
     }
 
     handleChange(e) {
         localState[e.target.name] = e.target.value;
+    }
+
+    componentWillUnmount() {
+        localState = undefined;
     }
 
     render() {
@@ -25,7 +30,7 @@ class Edit extends Component {
         if (localState === undefined) {
             localState = {
                 title: book.title,
-                genres: book.genres,
+                genres: book.genres.join(","),
                 description: book.description,
                 image: book.image,
                 author: book.author,
@@ -45,7 +50,7 @@ class Edit extends Component {
                     <div className="form-group">
                         <label htmlFor="genres">Genres</label>
                         <input type="text" name="genres" id="genres"
-                            placeholder="Enter genres for the book. Put a comma between them" onChange={this.handleChange.bind(this)} defaultValue={localState.genres.join(",")} />
+                            placeholder="Enter genres for the book. Put a comma between them" onChange={this.handleChange.bind(this)} defaultValue={localState.genres} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="description">Description</label>

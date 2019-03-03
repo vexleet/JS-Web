@@ -169,3 +169,15 @@ th {
         width: 100%;
     }
 }
+
+.details{
+    width: 60%;
+}
+
+.span5{
+    margin-right: 30px;
+}
+
+.margin{
+    margin-left: 10px;
+}

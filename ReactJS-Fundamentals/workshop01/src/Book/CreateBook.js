@@ -12,6 +12,7 @@ let localState = {
 class CreateBook extends Component {
     handleSubmit(e) {
         e.preventDefault();
+        localState.genres = localState.genres.split(',');
 
         this.props.createBook(localState);
     }

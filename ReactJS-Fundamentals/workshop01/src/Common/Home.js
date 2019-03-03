@@ -18,16 +18,16 @@ class Home extends Component {
 
         return (
             <div className="welcome-wrapper">
-                {user ?
+                {user && !isAdmin &&
                     <div className="welcome">
                         <h1>Welcome to our book store, {user} !</h1>
                         <p><Link to="/store">Go To Store</Link><Link to="/orders">View your orders</Link></p>
-                    </div> :
-                    <div className="welcome">
-                        <h1>Welcome to our book store!</h1>
-                        <p>Your favourite book is just a few click away. Register now and choose from our store.</p>
-                        <p><Link to="/store">Go To Store</Link><Link to="/register">Register</Link></p>
                     </div>}
+                {!user && <div className="welcome">
+                    <h1>Welcome to our book store!</h1>
+                    <p>Your favourite book is just a few click away. Register now and choose from our store.</p>
+                    <p><Link to="/store">Go To Store</Link><Link to="/register">Register</Link></p>
+                </div>}
                 <h2>Top Rated</h2>
                 <div className="row">
                     <div className="card-deck space-top">
@@ -40,17 +40,17 @@ class Home extends Component {
                                         <p className="card-text">{book.description}</p>
                                     </div>
 
-                                    {isAdmin ?
+                                    {isAdmin &&
                                         <div className="card-footer">
                                             <small className="text-muted" />
                                             <Link type="button" className="btn btn-primary float-right btn-sm" to={`/edit/${book._id}`}>Edit</Link>
                                             <button type="button" className="btn btn-danger float-right btn-sm" onClick={this.handleDelete.bind([book._id, this])} >Delete</button>
-                                        </div>
-                                        : <div className="card-footer">
-                                            <small className="text-muted" />
-                                            <a type="button" className="btn btn-primary float-right btn-sm" href="/details/5c750355eba4543e800f7ce4">Details</a>
-                                            <button type="button" className="btn btn-warning float-right btn-sm" onClick={this.handleOrder.bind([book, this])} >Order</button>
                                         </div>}
+                                    {user && !isAdmin && <div className="card-footer">
+                                        <small className="text-muted" />
+                                        <Link type="button" className="btn btn-primary float-right btn-sm" to={`/details/${book._id}`}>Details</Link>
+                                        <button type="button" className="btn btn-warning float-right btn-sm" onClick={this.handleOrder.bind([book, this])} >Order</button>
+                                    </div>}
                                 </div>
                             )
                         })}

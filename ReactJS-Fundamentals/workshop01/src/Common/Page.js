@@ -10,13 +10,14 @@ import MyOrders from '../Orders/MyOrders';
 import PendingOrders from '../Orders/PendingOrders';
 import ViewOrder from '../ViewOrder/ViewOrder';
 import Edit from '../Edit/Edit';
+import BookDetails from '../Book/BookDetails';
 
 class Page extends Component {
     render() {
         const { registerUser, loginUser, createBook,
             books, addBookToCart, myOrderedBooks, cartOrders,
             removeBookFromCart, orderBook, approveBook,
-            isAdmin, deleteBook, user, editBook } = this.props;
+            isAdmin, deleteBook, user, editBook, likeBook, dislikeBook } = this.props;
 
         return (
             <div>
@@ -25,7 +26,7 @@ class Page extends Component {
                 <Route path='/cart' render={() => <Cart cartOrders={cartOrders}
                     removeBookFromCart={removeBookFromCart} orderBook={orderBook} />} />
                 <Route path='/store' render={() => <Store books={books} addBookToCart={addBookToCart}
-                    deleteBook={deleteBook} isAdmin={isAdmin} />} />
+                    deleteBook={deleteBook} isAdmin={isAdmin} user={user} />} />
                 <Route exact path='/orders' render={() => <MyOrders myOrderedBooks={myOrderedBooks} />} />
                 <Route exact path='/admin/orders' render={() => <PendingOrders myOrderedBooks={myOrderedBooks}
                     approveBook={approveBook} />} />
@@ -35,6 +36,9 @@ class Page extends Component {
                 <Route path='/orders/details/:id'
                     render={(props) => <ViewOrder {...props} myOrderedBooks={myOrderedBooks} />} />
                 <Route path='/edit/:id' render={(props) => <Edit {...props} editBook={editBook} books={books} />} />
+                <Route path='/details/:id' render={(props) => <BookDetails {...props}
+                    books={books} addBookToCart={addBookToCart}
+                    likeBook={likeBook} user={user} dislikeBook={dislikeBook} />} />
             </div>
         )
     }

@@ -29,6 +29,8 @@ class App extends Component {
     this.approveBook = this.approveBook.bind(this);
     this.deleteBook = this.deleteBook.bind(this);
     this.editBook = this.editBook.bind(this);
+    this.likeBook = this.likeBook.bind(this);
+    this.dislikeBook = this.dislikeBook.bind(this);
   }
 
   async registerUser(user) {
@@ -113,6 +115,8 @@ class App extends Component {
         this.setState({
           cartOrders: []
         });
+        sessionStorage.removeItem("cartOrders");
+        this.getUserOrders(this.state.token);
         //TODO: Show message with toastr
         console.log("Ordered books successfully");
       });
@@ -197,6 +201,24 @@ class App extends Component {
       .then(() => this.fetchBooks());
   }
 
+  async likeBook(id) {
+    await fetch(`http://localhost:5000/book/like/${id}`, {
+      method: "post",
+      headers: {
+        "Authorization": `Bearer ${this.state.token}`,
+      }
+    }).then(() => this.fetchBooks());
+  }
+
+  async dislikeBook(id) {
+    await fetch(`http://localhost:5000/book/unlike/${id}`, {
+      method: "post",
+      headers: {
+        "Authorization": `Bearer ${this.state.token}`,
+      }
+    }).then(() => this.fetchBooks());
+  }
+
   render() {
     let { user, isAdmin, books, myOrderedBooks, cartOrders } = this.state;
 
@@ -216,7 +238,9 @@ class App extends Component {
           deleteBook={this.deleteBook}
           isAdmin={isAdmin}
           user={user}
-          editBook={this.editBook} />
+          editBook={this.editBook}
+          likeBook={this.likeBook}
+          dislikeBook={this.dislikeBook} />
         <Footer />
       </div>
     );
