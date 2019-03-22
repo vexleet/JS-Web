@@ -1,0 +1,8 @@
+<div *ngIf="hero.health > 0">
+  {{hero.name}} has {{hero.health}} health
+  <button (click)="attackHero()">Attack hero</button>
+</div>
+<div *ngIf="hero.health <= 0">
+  {{hero.name}} is dead
+  <button (click)="reviveHero()">Revive hero</button>
+</div>

@@ -1,0 +1,8 @@
+<input #currentHero type="text" (keyup.enter)="addHero(currentHero.value); currentHero.value='' ">
+<button (click)="addHero(currentHero.value); currentHero.value='' ">Add hero</button>
+
+<div>
+    <app-hero *ngFor="let hero of heroes; let i = index" [hero]="hero" (attackEvent)="attackHero(i)"
+        (reviveEvent)="reviveHero(i)">
+    </app-hero>
+</div>
