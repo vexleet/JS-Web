@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IHero } from './interfaces/index';
+import { HeroService } from './hero.service';
 
 @Component({
   selector: 'app-root',
@@ -7,32 +8,25 @@ import { IHero } from './interfaces/index';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  heroes: Array<IHero> = [];
+  heroes: IHero[];
 
-  constructor() { }
+  constructor(private heroService: HeroService) {
+    this.heroes = heroService.heroes;
+  }
 
   ngOnInit() {
   }
 
   addHero(currentHero: string) {
-    if (currentHero === "") {
-      console.log("Hero name must be at least 1 character long");
-      return;
-    }
-
-    let newHero: IHero = {
-      name: currentHero,
-      health: 20,
-    };
-
-    this.heroes = this.heroes.concat(newHero);
+    this.heroService.addHero(currentHero);
   }
 
   attackHero(index: number) {
-    this.heroes[index].health -= 5;
+    this.heroService.attackHero(index);
   }
 
-  reviveHero(index) {
-    this.heroes[index].health = 20;
+  reviveHero(index: number) {
+    this.heroService.reviveHero(index);
   }
+
 }

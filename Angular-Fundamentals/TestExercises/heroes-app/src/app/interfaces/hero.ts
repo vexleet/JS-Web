@@ -1,4 +1,4 @@
 export interface IHero {
     name: string,
-    health: 20,
+    health: number,
 }
