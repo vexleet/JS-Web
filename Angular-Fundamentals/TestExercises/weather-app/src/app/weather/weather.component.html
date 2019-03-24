@@ -1,0 +1,10 @@
+<input type="text" #cityToSearch placeholder="Enter city" (keyup.enter)="
+    getTodayWeatherForCity(cityToSearch.value); cityToSearch.value = ''" />
+<button (click)="getTodayWeatherForCity(cityToSearch.value); cityToSearch.value = ''">Search</button>
+
+<div *ngIf="city">
+  <h1>{{ city.name }}</h1>
+  <h1>{{ city.main.temp }} &#8451;</h1>
+  <p>{{ city.weather[0].main }}</p>
+  <p>{{ city.weather[0].description }}</p>
+</div>
