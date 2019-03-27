@@ -10,18 +10,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./movie-details.component.css']
 })
 export class MovieDetailsComponent implements OnInit {
-  movie$: MovieDetails;
+  movie$: Observable<MovieDetails>;
   movieId: string;
 
-  constructor(private route: ActivatedRoute,
-    private moviesService: MoviesService) {
-    this.movieId = route.snapshot.params["id"];
-  }
-
-  ngOnInit() {
-    this.moviesService.getMovie(this.movieId).subscribe(res => {
-      this.movie$ = res;
+  constructor(private movieDetails: ActivatedRoute) {
+    this.movieDetails.data.subscribe(data => {
+      this.movie$ = data["movieInfo"];
     });
   }
+
+  ngOnInit() { }
 
 }

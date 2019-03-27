@@ -12,14 +12,11 @@ import { Observable } from 'rxjs';
 export class MovieSearchComponent implements OnInit {
   matchedMovies$: Observable<Movie[]>;
 
-  constructor(private router: Router, private route: ActivatedRoute,
-    private movieService: MoviesService) { }
-
-  ngOnInit() {
-    this.route.queryParamMap.subscribe(queryParams => {
-      this.movieService.searchMovie(queryParams.get("search")).subscribe(res => {
-        this.matchedMovies$ = res["results"];
-      });
+  constructor(private route: ActivatedRoute) {
+    this.route.data.subscribe(data => {
+      this.matchedMovies$ = data["movie"]["results"];
     });
   }
+
+  ngOnInit() { }
 }
