@@ -8,15 +8,17 @@
           <div class="input-group-prepend">
             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
           </div>
-          <input class="form-control" placeholder="Full Name" ngModel name="fullName" #fullName="ngModel" required>
+          <input class="form-control" placeholder="Full Name" ngModel name="fullName" #fullName="ngModel" required
+            appFullNameValidator>
         </div>
-        <div *ngIf="fullName.invalid && fullName.touched" class="alert alert-danger">Please enter valid name</div>
+        <div *ngIf="fullName.invalid && fullName.touched" class="alert alert-danger">Please enter
+          valid name</div>
         <div class="form-group input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
           </div>
           <input class="form-control" placeholder="Email Address" type="email" ngModel name="email" #email="ngModel"
-            required>
+            appEmailValidator required>
         </div>
         <div *ngIf="email.invalid && email.touched" class="alert alert-danger">Please enter valid email</div>
         <div class="form-group input-group">
@@ -27,8 +29,12 @@
             <option value="" disabled>Choose a Phone Code</option>
             <option *ngFor="let phoneCode of phoneCodes;" [value]="phoneCode">{{phoneCode}}</option>
           </select>
-          <input class="form-control" placeholder="Phone number" type="text" ngModel name="phoneNumber">
+          <input class="form-control" placeholder="Phone number" type="text" ngModel name="phoneNumber"
+            appPhoneNumberValidator required #phoneNumber="ngModel">
         </div>
+        <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="alert alert-danger">Phone number must be 9 digits
+        </div>
+
         <div class="form-group input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"> <i class="fa fa-building"></i> </span>
@@ -38,18 +44,37 @@
             <option *ngFor="let jobTitle of jobTitles;" [value]="jobTitle">{{jobTitle}}</option>
           </select>
         </div>
+        <div ngModelGroup="passwordFields" #passwordCtrl="ngModelGroup" appMatchPasswordsValidator>
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            <input class="form-control" placeholder="Create password" type="password" name="password" ngModel required
+              appPasswordValidator #password="ngModel">
+          </div>
+          <div *ngIf="password.invalid && password.touched" class="alert alert-danger">Password must be between 3 and 16
+            characters</div>
+          <div class="form-group input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            <input class="form-control" placeholder="Repeat password" type="password" name="repeatPassword" required
+              ngModel appPasswordValidator #repeatPassword="ngModel">
+          </div>
+          <div *ngIf="repeatPassword.invalid && repeatPassword.touched" class="alert alert-danger">Password must be
+            between 3 and 16
+            characters</div>
+        </div>
+        <div *ngIf="passwordCtrl.invalid && passwordCtrl.touched" class="alert alert-danger">Passwords must match</div>
         <div class="form-group input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            <span class="input-group-text"> <i class="fa fa-image"></i> </span>
           </div>
-          <input class="form-control" placeholder="Create password" type="password" ngModel name="password">
+          <input class="form-control " placeholder="Enter Image URL" name="imageUrl" appImage ngModel
+            #imageUrl="ngModel">
         </div>
-        <div class="form-group input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-          </div>
-          <input class="form-control" placeholder="Repeat password" type="password" ngModel name="repeatPassword">
-        </div>
+        <div *ngIf="imageUrl.invalid && imageUrl.touched" class="alert alert-danger">Image URL must start with https and
+          end with jpg/png</div>
         <div class="form-group">
           <button class="btn btn-primary btn-block" [disabled]="f.invalid"> Create Account </button>
         </div>
