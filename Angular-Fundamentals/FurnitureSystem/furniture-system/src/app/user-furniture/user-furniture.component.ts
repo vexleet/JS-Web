@@ -1,4 +1,6 @@
+import { FurnitureService } from './../services/furniture.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-furniture',
@@ -6,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-furniture.component.css']
 })
 export class UserFurnitureComponent implements OnInit {
+  userFurniture$: Observable<any>;
 
-  constructor() { }
+  constructor(private furnitureService: FurnitureService) {
+    this.userFurniture$ = this.furnitureService.loadUserFurniture();
+  }
 
   ngOnInit() {
   }

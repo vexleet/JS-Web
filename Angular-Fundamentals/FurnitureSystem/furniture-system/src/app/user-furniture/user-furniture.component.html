@@ -6,17 +6,17 @@
     </div>
   </div>
   <div class="row space-top">
-    <div class="col-md-4">
+    <div class="col-md-4" *ngFor="let furniture of (userFurniture$ | async)">
       <div class="card text-white bg-primary">
         <div class="card-body">
           <blockquote class="card-blockquote">
-            <img src="https://www.royaloakindia.com/subcatimages/ROYIND-coffee-tables-3.jpg" />
-            <p>Description Here</p>
+            <img src={{furniture.image}} width="256" height="256" />
+            <p>{{furniture.description}}</p>
             <footer>Someone famous in
-              <cite title="Source Title">Source Title</cite>
+              <cite title="Source Title">{{furniture.title}}</cite>
             </footer>
             <div class="pull-right">
-              <a href=”#” class="btn btn-info">Details</a>
+              <a routerLink="/furniture/details/{{furniture._id}}" class="btn btn-info">Details</a>
               <a href=”#” class="btn btn-danger">Delete Item</a>
             </div>
           </blockquote>

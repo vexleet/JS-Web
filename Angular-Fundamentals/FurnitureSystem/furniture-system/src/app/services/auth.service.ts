@@ -21,7 +21,19 @@ export class AuthService {
   }
 
   setCredentials(data) {
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", data.user.name);
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', data.user.name);
+  }
+
+  clearStorage() {
+    localStorage.clear();
+  }
+
+  get isLoggedIn() {
+    return localStorage.getItem('token') === null;
+  }
+
+  get token() {
+    return localStorage.getItem('token');
   }
 }

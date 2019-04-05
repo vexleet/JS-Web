@@ -11,8 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CreateFurnitureComponent implements OnInit {
   createFurnitureForm = this.fb.group({
-    make: ['', [Validators.required]],
-    model: ['', [Validators.required]],
+    make: ['', [Validators.required, Validators.minLength(4)]],
+    model: ['', [Validators.required, Validators.minLength(4)]],
     year: ['', [Validators.required]],
     description: ['', [Validators.required]],
     price: ['', [Validators.required]],

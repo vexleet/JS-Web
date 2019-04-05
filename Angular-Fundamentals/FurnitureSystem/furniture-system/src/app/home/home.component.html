@@ -1,4 +1,14 @@
-<div class="container">
+<div class="container" *ngIf="authService.isLoggedIn">
+  <div class="row space-top">
+    <div class="col-md-12">
+      <h1>Welcome to Furniture System</h1>
+      <h5><a routerLink="/register">Register</a> or
+        <a routerLink="/login">Login</a> to check out the furnitures</h5>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!authService.isLoggedIn">
   <div class="row space-top">
     <div class="col-md-12">
       <h1>Welcome to Furniture System</h1>
@@ -6,17 +16,17 @@
     </div>
   </div>
   <div class="row space-top">
-    <div class="col-md-4">
+    <div class="col-md-4" *ngFor="let furniture of (furnitures$ | async)">
       <div class="card text-white bg-primary">
         <div class="card-body">
           <blockquote class="card-blockquote">
-            <img src="https://www.royaloakindia.com/subcatimages/ROYIND-coffee-tables-3.jpg" />
-            <p>Description here</p>
+            <img src={{furniture.image}} width="256" height="256" />
+            <p>{{furniture.description}}</p>
             <footer>Someone famous in
-              <cite title="Source Title">Source Title</cite>
+              <cite title="Source Title">{{furniture.title}}</cite>
             </footer>
             <div class="pull-right">
-              <a href=”#” class="btn btn-info">Details</a>
+              <a routerLink="/furniture/details/{{furniture._id}}" class="btn btn-info">Details</a>
             </div>
           </blockquote>
         </div>

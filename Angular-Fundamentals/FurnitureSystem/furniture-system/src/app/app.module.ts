@@ -16,6 +16,7 @@ import { UserFurnitureComponent } from './user-furniture/user-furniture.componen
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FurnitureDetailsComponent } from './furniture-details/furniture-details.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CreateFurnitureComponent,
     UserFurnitureComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    FurnitureDetailsComponent
   ],
   imports: [
     BrowserModule,

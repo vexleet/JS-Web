@@ -19,4 +19,16 @@ export class FurnitureService {
     return this.http.post<any>('furniture/create',
       { make, model, year, description, price, image, material });
   }
+
+  loadFurniture() {
+    return this.http.get<any>('furniture/all');
+  }
+
+  loadUserFurniture() {
+    return this.http.get<any>('furniture/user');
+  }
+
+  loadFurnitureDetails(furnitureId: string) {
+    return this.http.get<any>(`furniture/details/${furnitureId}`);
+  }
 }

@@ -1,3 +1,4 @@
+import { FurnitureDetailsComponent } from './furniture-details/furniture-details.component';
 import { CreateFurnitureComponent } from './create-furniture/create-furniture.component';
 import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'furniture/details/:id',
+    component: FurnitureDetailsComponent,
   }
 ];
 

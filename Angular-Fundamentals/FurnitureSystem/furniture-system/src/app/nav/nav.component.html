@@ -18,13 +18,21 @@
     </ul>
   </div>
 
-  <div class="form-inline my-2 my-lg-0">
+  <div class="form-inline my-2 my-lg-0" *ngIf="authService.isLoggedIn">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-inline my-2 my-lg-0" *ngIf="!authService.isLoggedIn">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()" routerLink="/home">Logout</a>
       </li>
     </ul>
   </div>
