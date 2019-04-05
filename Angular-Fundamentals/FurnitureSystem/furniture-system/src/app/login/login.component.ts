@@ -11,8 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
   loginForm = this.fb.group({
-    email: ['', [Validators.required]],
-    password: ['', [Validators.required]]
+    email: ['', [Validators.required, Validators.pattern(/[^@]+@[^\.]+\..+/)]],
+    password: ['', [Validators.required, Validators.minLength(4)]]
   });
 
   constructor(
@@ -32,6 +32,14 @@ export class LoginComponent implements OnInit {
       this.toastr.success(data.message);
       this.router.navigate(['/home']);
     }, err => console.error(err));
+  }
+
+  get email() {
+    return this.loginForm.get('email');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
   }
 
 }

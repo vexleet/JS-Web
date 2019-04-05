@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,12 +10,13 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
 
   logout() {
+    this.toastr.success('You have successfully logged out');
     this.authService.clearStorage();
   }
 

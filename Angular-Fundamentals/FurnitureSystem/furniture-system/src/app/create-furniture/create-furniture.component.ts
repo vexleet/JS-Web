@@ -13,11 +13,11 @@ export class CreateFurnitureComponent implements OnInit {
   createFurnitureForm = this.fb.group({
     make: ['', [Validators.required, Validators.minLength(4)]],
     model: ['', [Validators.required, Validators.minLength(4)]],
-    year: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    price: ['', [Validators.required]],
+    year: ['', [Validators.required, Validators.min(1950), Validators.max(2050)]],
+    description: ['', [Validators.required, Validators.minLength(10)]],
+    price: ['', [Validators.required, Validators.min(1)]],
     image: ['', [Validators.required]],
-    material: ['', Validators.required]
+    material: ['']
   });
 
   constructor(
@@ -36,7 +36,35 @@ export class CreateFurnitureComponent implements OnInit {
       .subscribe(data => {
         this.toastr.success(data.message);
         this.router.navigate(['/home']);
-      }, err => console.error(err));
+      });
+  }
+
+  get make() {
+    return this.createFurnitureForm.get('make');
+  }
+
+  get model() {
+    return this.createFurnitureForm.get('model');
+  }
+
+  get year() {
+    return this.createFurnitureForm.get('year');
+  }
+
+  get description() {
+    return this.createFurnitureForm.get('description');
+  }
+
+  get price() {
+    return this.createFurnitureForm.get('price');
+  }
+
+  get image() {
+    return this.createFurnitureForm.get('image');
+  }
+
+  get material() {
+    return this.createFurnitureForm.get('material');
   }
 
 }

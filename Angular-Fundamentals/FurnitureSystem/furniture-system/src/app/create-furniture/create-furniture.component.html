@@ -10,31 +10,43 @@
       <div class="col-md-4">
         <div class="form-group">
           <label class="form-control-label" for="new-make">Make</label>
-          <input class="form-control" id="new-make" type="text" formControlName="make">
+          <input class="form-control" [ngClass]="{
+            'is-valid': make.valid, 
+            'is-invalid': make.invalid}" id="new-make" type="text" formControlName="make">
         </div>
         <div class="form-group has-success">
           <label class="form-control-label" for="new-model">Model</label>
-          <input class="form-control is-valid" id="new-model" type="text" formControlName="model">
+          <input class="form-control" [ngClass]="{
+            'is-valid': model.valid, 
+            'is-invalid': model.invalid}" id="new-model" type="text" formControlName="model">
 
         </div>
         <div class="form-group has-danger">
           <label class="form-control-label" for="new-year">Year</label>
-          <input class="form-control is-invalid" id="new-year" type="number" formControlName="year">
+          <input class="form-control" [ngClass]="{
+            'is-valid': year.valid, 
+            'is-invalid': year.invalid}" id="new-year" type="number" formControlName="year" min="1950" max="2050">
 
         </div>
         <div class="form-group">
           <label class="form-control-label" for="new-description">Description</label>
-          <input class="form-control" id="new-description" type="text" formControlName="description">
+          <input class="form-control" [ngClass]="{
+            'is-valid': description.valid, 
+            'is-invalid': description.invalid}" id="new-description" type="text" formControlName="description">
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label class="form-control-label" for="new-price">Price</label>
-          <input class="form-control" id="new-price" type="number" formControlName="price">
+          <input class="form-control" [ngClass]="{
+            'is-valid': price.valid, 
+            'is-invalid': price.invalid}" id="new-price" type="number" formControlName="price" min="1">
         </div>
         <div class="form-group">
           <label class="form-control-label" for="new-image">Image</label>
-          <input class="form-control" id="new-image" type="text" formControlName="image">
+          <input class="form-control" [ngClass]="{
+            'is-valid': image.valid, 
+            'is-invalid': image.invalid}" id="new-image" type="text" formControlName="image">
         </div>
         <div class="form-group">
           <label class="form-control-label" for="new-material">Material (optional)</label>

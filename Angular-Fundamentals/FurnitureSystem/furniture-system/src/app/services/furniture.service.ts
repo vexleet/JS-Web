@@ -31,4 +31,8 @@ export class FurnitureService {
   loadFurnitureDetails(furnitureId: string) {
     return this.http.get<any>(`furniture/details/${furnitureId}`);
   }
+
+  deleteFurniture(furnitureId: string) {
+    return this.http.delete(`furniture/delete/${furnitureId}`);
+  }
 }

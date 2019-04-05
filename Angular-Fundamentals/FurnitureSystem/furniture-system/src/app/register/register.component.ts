@@ -11,9 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent implements OnInit {
   registerForm = this.fb.group({
-    email: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.pattern(/[^@]+@[^\.]+\..+/)]],
     name: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(4)]],
   });
 
   constructor(
@@ -31,8 +31,19 @@ export class RegisterComponent implements OnInit {
     this.authService.register(email, name, password).subscribe(data => {
       this.toastr.success(data.message);
       this.router.navigate(['/login']);
-    }, err => this.toastr.error("ERROR!"));
-    //TODO: Fix toatr error
+    });
+  }
+
+  get name() {
+    return this.registerForm.get('name');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
   }
 
 }

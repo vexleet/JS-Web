@@ -10,11 +10,15 @@
       <div class="col-md-4">
         <div class="form-group">
           <label class="form-control-label" for="new-email">Email</label>
-          <input class="form-control" id="new-email" type="email" formControlName="email">
+          <input class="form-control" [ngClass]="{
+            'is-valid': email.valid, 
+            'is-invalid': email.invalid}" id="new-email" type="email" formControlName="email">
         </div>
         <div class="form-group has-danger">
           <label class="form-control-label" for="new-password">Password</label>
-          <input class="form-control is-invalid" id="new-password" type="password" formControlName="password">
+          <input class="form-control is-invalid" [ngClass]="{
+            'is-valid': password.valid, 
+            'is-invalid': password.invalid}" id="new-password" type="password" formControlName="password">
         </div>
       </div>
     </div>

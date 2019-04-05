@@ -1,3 +1,4 @@
+import { ErrorHandlerInterceptor } from './interceptors/error-handler.interceptor';
 import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
 import { AuthService } from './services/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,6 +18,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FurnitureDetailsComponent } from './furniture-details/furniture-details.component';
+import { DeleteFurnitureComponent } from './delete-furniture/delete-furniture.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { FurnitureDetailsComponent } from './furniture-details/furniture-details
     UserFurnitureComponent,
     RegisterComponent,
     LoginComponent,
-    FurnitureDetailsComponent
+    FurnitureDetailsComponent,
+    DeleteFurnitureComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,11 @@ import { FurnitureDetailsComponent } from './furniture-details/furniture-details
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppHttpInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
       multi: true,
     }
   ],

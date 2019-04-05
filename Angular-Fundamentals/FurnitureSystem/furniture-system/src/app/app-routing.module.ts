@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserFurnitureComponent } from './user-furniture/user-furniture.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { DeleteFurnitureComponent } from './delete-furniture/delete-furniture.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'furniture/details/:id',
     component: FurnitureDetailsComponent,
+  },
+  {
+    path: 'furniture/delete/:id',
+    component: DeleteFurnitureComponent,
   }
 ];
 
