@@ -27,6 +27,10 @@
             </footer>
             <div class="pull-right">
               <a routerLink="/furniture/details/{{furniture._id}}" class="btn btn-info">Details</a>
+              <a *ngIf="authService.isAdmin" routerLink="/furniture/edit/{{furniture._id}}"
+                class="btn btn-success">Edit</a>
+              <a *ngIf="authService.isAdmin" routerLink="/furniture/delete/{{furniture._id}}"
+                class="btn btn-danger">Delete</a>
             </div>
           </blockquote>
         </div>

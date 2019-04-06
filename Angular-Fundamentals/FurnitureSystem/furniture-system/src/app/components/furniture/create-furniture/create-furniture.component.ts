@@ -1,15 +1,18 @@
-import { FurnitureService } from './../services/furniture.service';
+import { FurnitureService } from '../../../core/services/furniture.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-furniture',
   templateUrl: './create-furniture.component.html',
   styleUrls: ['./create-furniture.component.css']
 })
-export class CreateFurnitureComponent implements OnInit {
+export class CreateFurnitureComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject();
   createFurnitureForm = this.fb.group({
     make: ['', [Validators.required, Validators.minLength(4)]],
     model: ['', [Validators.required, Validators.minLength(4)]],
@@ -29,10 +32,16 @@ export class CreateFurnitureComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   createFurniture() {
     const { make, model, year, description, price, image, material } = this.createFurnitureForm.value;
 
     this.furnitureService.createFurniture(make, model, year, description, price, image, material)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(data => {
         this.toastr.success(data.message);
         this.router.navigate(['/home']);

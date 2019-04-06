@@ -1,6 +1,6 @@
-import { ErrorHandlerInterceptor } from './interceptors/error-handler.interceptor';
-import { AppHttpInterceptor } from './interceptors/app-http.interceptor';
-import { AuthService } from './services/auth.service';
+import { FurnitureModule } from './components/furniture/furniture.module';
+import { ErrorHandlerInterceptor } from './core/interceptors/error-handler.interceptor';
+import { AppHttpInterceptor } from './core/interceptors/app-http.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,27 +10,19 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavComponent } from './nav/nav.component';
-import { HomeComponent } from './home/home.component';
-import { CreateFurnitureComponent } from './create-furniture/create-furniture.component';
-import { UserFurnitureComponent } from './user-furniture/user-furniture.component';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
+import { NavComponent } from './components/shared/nav/nav.component';
+import { HomeComponent } from './components/furniture/home/home.component';
+import { RegisterComponent } from './components/authenticate/register/register.component';
+import { LoginComponent } from './components/authenticate/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FurnitureDetailsComponent } from './furniture-details/furniture-details.component';
-import { DeleteFurnitureComponent } from './delete-furniture/delete-furniture.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     HomeComponent,
-    CreateFurnitureComponent,
-    UserFurnitureComponent,
     RegisterComponent,
     LoginComponent,
-    FurnitureDetailsComponent,
-    DeleteFurnitureComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +31,7 @@ import { DeleteFurnitureComponent } from './delete-furniture/delete-furniture.co
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,
+    FurnitureModule
   ],
   providers: [
     {

@@ -1,15 +1,18 @@
-import { AuthService } from './../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../core/services/auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  private ngUnsubscribe = new Subject();
   registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.pattern(/[^@]+@[^\.]+\..+/)]],
     name: ['', [Validators.required]],
@@ -25,13 +28,20 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   registerUser() {
     const { email, name, password } = this.registerForm.value;
 
-    this.authService.register(email, name, password).subscribe(data => {
-      this.toastr.success(data.message);
-      this.router.navigate(['/login']);
-    });
+    this.authService.register(email, name, password)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(data => {
+        this.toastr.success(data['message']);
+        this.router.navigate(['/login']);
+      });
   }
 
   get name() {

@@ -7,13 +7,10 @@
         <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
       </li>
       <li class="nav-item" *ngIf="!authService.isLoggedIn">
-        <a class="nav-link" routerLink="/create" routerLinkActive="active">Create Furniture</a>
+        <a class="nav-link" routerLink="/furniture/create" routerLinkActive="active">Create Furniture</a>
       </li>
       <li class="nav-item" *ngIf="!authService.isLoggedIn">
-        <a class="nav-link" routerLink="/user/furniture" routerLinkActive="active">My Furniture</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" routerLink="/furniture/user" routerLinkActive="active">My Furniture</a>
       </li>
     </ul>
   </div>

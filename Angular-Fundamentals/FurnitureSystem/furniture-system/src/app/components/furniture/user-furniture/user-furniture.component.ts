@@ -1,6 +1,7 @@
-import { FurnitureService } from './../services/furniture.service';
+import { FurnitureService } from '../../../core/services/furniture.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IFurniture } from '../../../core/models';
 
 @Component({
   selector: 'app-user-furniture',
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./user-furniture.component.css']
 })
 export class UserFurnitureComponent implements OnInit {
-  userFurniture$: Observable<any>;
+  userFurniture$: Observable<IFurniture>;
 
   constructor(private furnitureService: FurnitureService) {
     this.userFurniture$ = this.furnitureService.loadUserFurniture();

@@ -9,20 +9,17 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   register(email: string, name: string, password: string) {
-    //TODO: Make Interface 
-
-    return this.http.post<any>('auth/register', { email, name, password });
+    return this.http.post('auth/register', { email, name, password });
   }
 
   login(email: string, password: string) {
-    //TODO: Make Interface
-
-    return this.http.post<any>('auth/login', { email, password });
+    return this.http.post('auth/login', { email, password });
   }
 
   setCredentials(data) {
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', data.user.name);
+    localStorage.setItem('isAdmin', data.user.isAdmin);
   }
 
   clearStorage() {
@@ -35,5 +32,9 @@ export class AuthService {
 
   get token() {
     return localStorage.getItem('token');
+  }
+
+  get isAdmin() {
+    return localStorage.getItem('isAdmin') === 'true';
   }
 }

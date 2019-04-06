@@ -9,18 +9,18 @@
       <div class="card text-white bg-primary">
         <div class="card-body">
           <blockquote class="card-blockquote">
-            <img src="{{(furniture$ | async)?.image}}" width="256" height="256" />
+            <img src="{{furniture.image}}" width="256" height="256" />
           </blockquote>
         </div>
       </div>
     </div>
     <div class=" col-md-4">
-      <p>Make: {{(furniture$ | async)?.make}}</p>
-      <p>Model: {{(furniture$ | async)?.model}}</p>
-      <p>Year: {{(furniture$ | async)?.year}}</p>
-      <p>Description: {{(furniture$ | async)?.description}}</p>
-      <p>Price: {{(furniture$ | async)?.price}}</p>
-      <p>Material: {{(furniture$ | async)?.material}}</p>
+      <p>Make: {{furniture.make}}</p>
+      <p>Model: {{furniture.model}}</p>
+      <p>Year: {{furniture.year}}</p>
+      <p>Description: {{furniture.description}}</p>
+      <p>Price: {{furniture.price}}</p>
+      <p>Material: {{furniture.material}}</p>
     </div>
   </div>
 </div>

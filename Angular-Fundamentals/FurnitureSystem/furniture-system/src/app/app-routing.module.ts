@@ -1,12 +1,16 @@
-import { FurnitureDetailsComponent } from './furniture-details/furniture-details.component';
-import { CreateFurnitureComponent } from './create-furniture/create-furniture.component';
-import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './components/authenticate/guards/auth.guard';
+import { FurnitureDetailsComponent } from './components/furniture/furniture-details/furniture-details.component';
+import { CreateFurnitureComponent } from './components/furniture/create-furniture/create-furniture.component';
+import { HomeComponent } from './components/furniture/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserFurnitureComponent } from './user-furniture/user-furniture.component';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { DeleteFurnitureComponent } from './delete-furniture/delete-furniture.component';
+import { UserFurnitureComponent } from './components/furniture/user-furniture/user-furniture.component';
+import { RegisterComponent } from './components/authenticate/register/register.component';
+import { LoginComponent } from './components/authenticate/login/login.component';
+import { DeleteFurnitureComponent } from './components/furniture/delete-furniture/delete-furniture.component';
+import { EditFurnitureComponent } from './components/furniture/edit-furniture/edit-furniture.component';
+import { FurnitureEditResolver } from './core/resolvers/furniture-edit.service';
+import { FurnitureDetailsResolver } from './core/resolvers/furniture-details.service';
 
 const routes: Routes = [
   {
@@ -19,14 +23,6 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'create',
-    component: CreateFurnitureComponent,
-  },
-  {
-    path: 'user/furniture',
-    component: UserFurnitureComponent,
-  },
-  {
     path: 'register',
     component: RegisterComponent,
   },
@@ -35,13 +31,46 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'furniture/details/:id',
-    component: FurnitureDetailsComponent,
+    path: 'furniture',
+    children: [
+      {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full',
+      },
+      {
+        path: 'create',
+        component: CreateFurnitureComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'user',
+        component: UserFurnitureComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'details/:id',
+        component: FurnitureDetailsComponent,
+        canActivate: [AuthGuard],
+        resolve: {
+          furnitureDetails: FurnitureDetailsResolver,
+        }
+      },
+      {
+        path: 'delete/:id',
+        component: DeleteFurnitureComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'edit/:id',
+        component: EditFurnitureComponent,
+        canActivate: [AuthGuard],
+        resolve: {
+          furniture: FurnitureEditResolver,
+        }
+      }
+    ]
   },
-  {
-    path: 'furniture/delete/:id',
-    component: DeleteFurnitureComponent,
-  }
 ];
 
 @NgModule({
