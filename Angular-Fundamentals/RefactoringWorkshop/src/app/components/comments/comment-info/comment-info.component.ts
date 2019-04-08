@@ -1,5 +1,6 @@
 import { CommentService } from 'src/app/core/services/comment.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IPostInfo, ICommentInfo } from 'src/app/core/models';
 
 @Component({
   selector: 'app-comment-info',
@@ -7,9 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./comment-info.component.css']
 })
 export class CommentInfoComponent implements OnInit {
-  @Input() comments: Object[];
-  @Input() post: Object;
-  @Input() isAuthor: boolean;
+  @Input() comments: ICommentInfo[];
   @Output() deleteCommentEmmiter: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
@@ -19,6 +18,10 @@ export class CommentInfoComponent implements OnInit {
 
   deleteComment(id: string) {
     this.deleteCommentEmmiter.emit(id);
+  }
+
+  isAuthor(comment: ICommentInfo) {
+    return comment['_acl']['creator'] === localStorage.getItem('userId');
   }
 
 }

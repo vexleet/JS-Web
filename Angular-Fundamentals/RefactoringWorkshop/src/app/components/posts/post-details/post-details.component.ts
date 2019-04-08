@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { PostService } from '../../../core/services/post.service';
 import { CommentService } from '../../../core/services/comment.service';
 import { zip } from 'rxjs';
+import { IPostInfo, ICommentInfo } from 'src/app/core/models';
 
 @Component({
   selector: 'app-post-details',
@@ -11,8 +12,8 @@ import { zip } from 'rxjs';
   styleUrls: ['./post-details.component.css']
 })
 export class PostDetailsComponent implements OnInit {
-  post: Object;
-  comments: Object[];
+  post: IPostInfo;
+  comments: ICommentInfo[];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,16 +24,11 @@ export class PostDetailsComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
+    this.post = this.route.snapshot.data['post'];
 
-    zip(this.postService.getDetails(id), this.commentService.getAllForPost(id))
-      .subscribe(([post, comments]) => {
-        this.post = post;
-        this.comments = comments;
-      });
-
-    this.postService.getDetails(id)
-      .subscribe((data) => {
-        this.post = data;
+    this.commentService.getAllForPost(id)
+      .subscribe(data => {
+        this.comments = data;
       });
   }
 

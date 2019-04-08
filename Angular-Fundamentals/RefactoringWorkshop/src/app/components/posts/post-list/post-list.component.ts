@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 import { PostService } from '../../../core/services/post.service';
+import { IPostInfo } from 'src/app/core/models';
 
 @Component({
   selector: 'app-post-list',
@@ -8,7 +9,7 @@ import { PostService } from '../../../core/services/post.service';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit {
-  allPosts: Object[];
+  allPosts: IPostInfo[];
 
   constructor(
     private postService: PostService,
@@ -42,7 +43,7 @@ export class PostListComponent implements OnInit {
       })
   }
 
-  isAuthor(post: Object) {
+  isAuthor(post: IPostInfo) {
     return post['_acl']['creator'] === localStorage.getItem('userId');
   }
 

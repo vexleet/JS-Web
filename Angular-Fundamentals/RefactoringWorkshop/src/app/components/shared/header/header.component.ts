@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,15 +10,20 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class HeaderComponent implements OnInit {
   @Input() isLoggedIn: boolean;
   @Input() username: string;
-  @Output() logoutEmitter: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit() {
   }
 
   logout() {
-    this.logoutEmitter.emit();
+    this.authService.logout()
+      .subscribe(() => {
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      });
   }
 
 }

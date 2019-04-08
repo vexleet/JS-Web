@@ -1,3 +1,5 @@
+import { CanLoadPosts } from './core/guards/posts.guard';
+import { FetchPostResolver } from './core/resolvers/fetch-post.resolver';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/authentication/login/login.component';
@@ -13,13 +15,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {
     path: 'posts',
-    children: [
-      { path: '', pathMatch: 'full', component: PostListComponent, },
-      { path: 'create', component: PostCreateComponent },
-      { path: 'user', component: PostListComponent },
-      { path: 'edit/:id', component: PostEditComponent },
-      { path: 'details/:id', component: PostDetailsComponent }
-    ]
+    loadChildren: './components/posts/post.module#PostModule',
+    canLoad: [CanLoadPosts]
   },
 ];
 

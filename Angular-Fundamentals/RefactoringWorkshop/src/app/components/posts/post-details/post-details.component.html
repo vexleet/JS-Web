@@ -34,9 +34,9 @@
       </div>
     </article>
   </ng-template>
-  <app-comment-create [post]="post" (postCommentEmmiter)="postComment($event)"></app-comment-create>
+  <app-comment-create (postCommentEmmiter)="postComment($event)"></app-comment-create>
   <ng-template [ngIf]="comments">
-    <app-comment-info [post]="post" [comments]="comments" [isAuthor]="isAuthor()"
-      (deleteCommentEmmiter)="deleteComment($event)"></app-comment-info>
+    <app-comment-info [comments]="comments" (deleteCommentEmmiter)="deleteComment($event)">
+    </app-comment-info>
   </ng-template>
 </section>

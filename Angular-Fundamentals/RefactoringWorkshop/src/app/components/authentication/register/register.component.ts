@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,18 +14,23 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
   }
 
   register() {
+    if (this.registerForm.value['password'] !== this.registerForm.value['repeatPass']) {
+      this.toastr.error('Passwords must match');
+    }
+
     this.authService
       .signUp(this.registerForm.value)
       .subscribe((data) => {
         console.log(data);
         this.router.navigate(['/login']);
-      })
+      });
   }
 }

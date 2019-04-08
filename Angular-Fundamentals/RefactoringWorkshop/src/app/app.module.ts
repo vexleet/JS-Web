@@ -1,7 +1,10 @@
+import { AppHttpInterceptor } from './core/interceptors/app-http.interceptor';
+import { CommentsModule } from './components/comments/comments.module';
+import { PostModule } from './components/posts/post.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -13,26 +16,17 @@ import { PostListComponent } from './components/posts/post-list/post-list.compon
 import { PostCreateComponent } from './components/posts/post-create/post-create.component';
 import { PostEditComponent } from './components/posts/post-edit/post-edit.component';
 import { PostDetailsComponent } from './components/posts/post-details/post-details.component';
-import { HeaderComponent } from './components/shared/header/header.component';
-import { FooterComponent } from './components/shared/footer/footer.component';
-import { ContentComponent } from './components/shared/content/content.component';
 import { CommentCreateComponent } from './components/comments/comment-create/comment-create.component';
 import { CommentInfoComponent } from './components/comments/comment-info/comment-info.component';
+import { PostInfoComponent } from './components/posts/post-info/post-info.component';
+import { SharedModule } from './components/shared/shared.module';
+import { ErrorHandlerInterceptor } from './core/interceptors/error-handler.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    PostListComponent,
-    PostCreateComponent,
-    PostEditComponent,
-    PostDetailsComponent,
-    HeaderComponent,
-    FooterComponent,
-    ContentComponent,
-    CommentCreateComponent,
-    CommentInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,10 +34,22 @@ import { CommentInfoComponent } from './components/comments/comment-info/comment
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    SharedModule,
+    CommentsModule,
+    // PostModule,
   ],
   providers: [
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
+      multi: true,
+    }
   ],
   bootstrap: [AppComponent]
 })
